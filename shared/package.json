@@ -1,0 +1,12 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "license": "MIT",
+  "dependencies": {
+    "@apollo/datasource-rest": "^5.0.2",
+    "@wca/helpers": "^1.1.4",
+    "add": "^2.0.6",
+    "apollo-server-core": "^3.11.1"
+  }
+}

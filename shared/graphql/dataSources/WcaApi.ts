@@ -1,22 +1,14 @@
 import { DataSourceRequest, RESTDataSource } from "@apollo/datasource-rest";
 import { KeyValueCache } from "apollo-server-core";
 import { Competition } from "@wca/helpers";
+import { ApiCompetition, ApiResult } from "types";
 
-type ApiCompetition = {
-  id: string;
-  name: string;
-  city: string;
-  competitor_limit: number;
-  country_iso2: string;
-  start_date: string;
-  end_date: string;
-  event_ids: string[];
-};
 
 export class WcaApi extends RESTDataSource {
-  constructor(options: { cache: KeyValueCache }) {
+  constructor(options: { cache: KeyValueCache, wcaOrigin?: string }) {
     super(options);
-    this.baseURL = `${process.env.WCA_ORIGIN}/api/v0/`;
+    console.log(process.env.WCA_ORIGIN);
+    this.baseURL = `${options.wcaOrigin || process.env.WCA_ORIGIN}/api/v0/`;
   }
 
   async fetchMany<T>(
@@ -68,6 +60,14 @@ export class WcaApi extends RESTDataSource {
     });
 
     return comps;
+  }
+
+  getCompetition(competitionId: string) {
+    return this.get<ApiCompetition>(`competitions/${competitionId}`);
+  }
+
+  getResults(competitionId: string) {
+    return this.get<ApiResult[]>(`competitions/${competitionId}/results`);
   }
 
   getWcifPublic(competitionId: string) {

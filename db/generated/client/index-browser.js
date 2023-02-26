@@ -89,82 +89,21 @@ Prisma.NullTypes = {
 // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
 function makeEnum(x) { return x; }
 
-exports.Prisma.ChampionshipsScalarFieldEnum = makeEnum({
-  id: 'id',
-  competition_id: 'competition_id',
-  championship_type: 'championship_type'
-});
-
 exports.Prisma.CompetitionScalarFieldEnum = makeEnum({
   id: 'id',
   name: 'name',
-  cityName: 'cityName',
   countryId: 'countryId',
-  information: 'information',
-  year: 'year',
-  month: 'month',
-  day: 'day',
-  endMonth: 'endMonth',
-  endDay: 'endDay',
-  cancelled: 'cancelled',
-  eventSpecs: 'eventSpecs',
-  wcaDelegate: 'wcaDelegate',
-  organiser: 'organiser',
-  venue: 'venue',
-  venueAddress: 'venueAddress',
-  venueDetails: 'venueDetails',
-  external_website: 'external_website',
-  cellName: 'cellName',
-  latitude: 'latitude',
-  longitude: 'longitude'
-});
-
-exports.Prisma.ContinentsScalarFieldEnum = makeEnum({
-  id: 'id',
-  name: 'name',
-  recordName: 'recordName',
-  latitude: 'latitude',
-  longitude: 'longitude',
-  zoom: 'zoom'
-});
-
-exports.Prisma.CountriesScalarFieldEnum = makeEnum({
-  id: 'id',
-  name: 'name',
-  continentId: 'continentId',
-  iso2: 'iso2'
-});
-
-exports.Prisma.Eligible_country_iso2s_for_championshipScalarFieldEnum = makeEnum({
-  id: 'id',
-  championship_type: 'championship_type',
-  eligible_country_iso2: 'eligible_country_iso2'
-});
-
-exports.Prisma.EventsScalarFieldEnum = makeEnum({
-  id: 'id',
-  name: 'name',
-  rank: 'rank',
-  format: 'format',
-  cellName: 'cellName'
-});
-
-exports.Prisma.FormatsScalarFieldEnum = makeEnum({
-  id: 'id',
-  name: 'name',
-  sort_by: 'sort_by',
-  sort_by_second: 'sort_by_second',
-  expected_solve_count: 'expected_solve_count',
-  trim_fastest_n: 'trim_fastest_n',
-  trim_slowest_n: 'trim_slowest_n'
+  startDate: 'startDate',
+  endDate: 'endDate'
 });
 
 exports.Prisma.PersonScalarFieldEnum = makeEnum({
   id: 'id',
-  subid: 'subid',
+  wcaUserId: 'wcaUserId',
   name: 'name',
   countryId: 'countryId',
-  gender: 'gender'
+  gender: 'gender',
+  avatar: 'avatar'
 });
 
 exports.Prisma.PicksScalarFieldEnum = makeEnum({
@@ -178,53 +117,28 @@ exports.Prisma.PicksScalarFieldEnum = makeEnum({
   points: 'points'
 });
 
-exports.Prisma.RanksAverageScalarFieldEnum = makeEnum({
-  personId: 'personId',
-  eventId: 'eventId',
-  best: 'best',
-  worldRank: 'worldRank',
-  continentRank: 'continentRank',
-  countryRank: 'countryRank',
-  personSubId: 'personSubId'
+exports.Prisma.QueryMode = makeEnum({
+  default: 'default',
+  insensitive: 'insensitive'
 });
 
-exports.Prisma.RanksSingleScalarFieldEnum = makeEnum({
-  personId: 'personId',
-  eventId: 'eventId',
-  best: 'best',
-  worldRank: 'worldRank',
-  continentRank: 'continentRank',
-  countryRank: 'countryRank',
-  personSubId: 'personSubId'
-});
-
-exports.Prisma.ResultsScalarFieldEnum = makeEnum({
+exports.Prisma.ResultScalarFieldEnum = makeEnum({
   competitionId: 'competitionId',
+  personId: 'personId',
   eventId: 'eventId',
   roundTypeId: 'roundTypeId',
+  formatId: 'formatId',
   pos: 'pos',
   best: 'best',
   average: 'average',
-  personName: 'personName',
-  personId: 'personId',
-  personCountryId: 'personCountryId',
-  formatId: 'formatId',
-  value1: 'value1',
-  value2: 'value2',
-  value3: 'value3',
-  value4: 'value4',
-  value5: 'value5',
   regionalSingleRecord: 'regionalSingleRecord',
   regionalAverageRecord: 'regionalAverageRecord',
-  personsSubid: 'personsSubid'
-});
-
-exports.Prisma.RoundTypesScalarFieldEnum = makeEnum({
-  id: 'id',
-  rank: 'rank',
-  name: 'name',
-  cellName: 'cellName',
-  final: 'final'
+  date: 'date',
+  week: 'week',
+  year: 'year',
+  points: 'points',
+  updatedAt: 'updatedAt',
+  createdAt: 'createdAt'
 });
 
 exports.Prisma.SessionScalarFieldEnum = makeEnum({
@@ -262,17 +176,8 @@ exports.Prisma.UserScalarFieldEnum = makeEnum({
 
 exports.Prisma.ModelName = makeEnum({
   Competition: 'Competition',
-  Continents: 'Continents',
-  Countries: 'Countries',
-  Events: 'Events',
-  Formats: 'Formats',
   Person: 'Person',
-  RanksAverage: 'RanksAverage',
-  RanksSingle: 'RanksSingle',
-  Results: 'Results',
-  RoundTypes: 'RoundTypes',
-  championships: 'championships',
-  eligible_country_iso2s_for_championship: 'eligible_country_iso2s_for_championship',
+  Result: 'Result',
   Session: 'Session',
   User: 'User',
   Team: 'Team',

@@ -1,4 +1,6 @@
 {
+  "name": "workers",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "node dist/index.js",
@@ -6,9 +8,14 @@
     "dev": "nodemon index.ts"
   },
   "dependencies": {
+    "@apollo/utils.keyvadapter": "^2.0.0",
     "@types/node": "^18.14.1",
     "@types/node-cron": "^3.0.7",
+    "db": "1.0.0",
+    "dotenv": "^16.0.3",
+    "keyv": "^4.5.2",
     "node-cron": "^3.0.2",
+    "shared": "1.0.0",
     "tsc": "^2.0.4",
     "typescript": "^4.9.5"
   },

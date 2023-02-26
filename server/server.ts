@@ -17,7 +17,7 @@ import authRouter from './auth';
 import { User } from '@prisma/client';
 import graphqlServerConfig from './graphql';
 import prisma from './db';
-import { WcaApi } from './graphql/resolvers/datasources/WcaApi';
+import { WcaApi } from '../shared/graphql/dataSources/WcaApi';
 import { KeyvAdapter } from '@apollo/utils.keyvadapter';
 import KeyvRedis from '@keyv/redis';
 import Keyv from 'keyv';
