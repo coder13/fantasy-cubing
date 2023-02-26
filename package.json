@@ -3,7 +3,8 @@
   "workspaces": [
     "server",
     "app",
-    "generated"
+    "generated",
+    "prisma"
   ],
   "scripts": {
     "prisma:migrate": "prisma migrate deploy",
