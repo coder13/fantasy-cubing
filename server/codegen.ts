@@ -9,7 +9,7 @@ const config: CodegenConfig = {
   overwrite: true,
   schema: './graphql/schema/',
   generates: {
-    'generated/graphql.ts': backendConf,
+    '../generated/graphql.ts': backendConf,
   },
 };
 

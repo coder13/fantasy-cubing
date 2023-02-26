@@ -34,6 +34,36 @@ export type Competition = {
   start_date: Scalars['String'];
 };
 
+export type DbPerson = {
+  __typename?: 'DBPerson';
+  countryId: Scalars['String'];
+  gender?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  name: Scalars['String'];
+  results?: Maybe<Array<DbResult>>;
+  subid: Scalars['Int'];
+};
+
+export type DbResult = {
+  __typename?: 'DBResult';
+  average: Scalars['Int'];
+  best: Scalars['Int'];
+  competitionId: Scalars['String'];
+  eventId: Scalars['String'];
+  formatId: Scalars['String'];
+  personCountryId: Scalars['String'];
+  personId: Scalars['String'];
+  pos: Scalars['Int'];
+  regionalAverageRecord?: Maybe<Scalars['String']>;
+  regionalSingleRecord?: Maybe<Scalars['String']>;
+  roundTypeId: Scalars['String'];
+  value1: Scalars['Int'];
+  value2: Scalars['Int'];
+  value3: Scalars['Int'];
+  value4: Scalars['Int'];
+  value5: Scalars['Int'];
+};
+
 export type Person = {
   __typename?: 'Person';
   countryIso2: Scalars['String'];
@@ -58,6 +88,7 @@ export type Query = {
   __typename?: 'Query';
   getCompetitions: Array<Competition>;
   getTopCubers: Array<PersonEventReg>;
+  person?: Maybe<DbPerson>;
 };
 
 
@@ -71,6 +102,11 @@ export type QueryGetTopCubersArgs = {
   endDate: Scalars['String'];
   rank: Scalars['Int'];
   startDate: Scalars['String'];
+};
+
+
+export type QueryPersonArgs = {
+  wcaId?: InputMaybe<Scalars['String']>;
 };
 
 export type Registration = {
@@ -159,6 +195,8 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Comp: ResolverTypeWrapper<Comp>;
   Competition: ResolverTypeWrapper<Competition>;
+  DBPerson: ResolverTypeWrapper<DbPerson>;
+  DBResult: ResolverTypeWrapper<DbResult>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Person: ResolverTypeWrapper<Person>;
@@ -174,6 +212,8 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   Comp: Comp;
   Competition: Competition;
+  DBPerson: DbPerson;
+  DBResult: DbResult;
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Person: Person;
@@ -204,6 +244,36 @@ export type CompetitionResolvers<ContextType = any, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type DbPersonResolvers<ContextType = any, ParentType extends ResolversParentTypes['DBPerson'] = ResolversParentTypes['DBPerson']> = {
+  countryId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  gender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  results?: Resolver<Maybe<Array<ResolversTypes['DBResult']>>, ParentType, ContextType>;
+  subid?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DbResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['DBResult'] = ResolversParentTypes['DBResult']> = {
+  average?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  best?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  competitionId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  eventId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  formatId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  personCountryId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  personId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  pos?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  regionalAverageRecord?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  regionalSingleRecord?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  roundTypeId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  value1?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  value2?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  value3?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  value4?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  value5?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type PersonResolvers<ContextType = any, ParentType extends ResolversParentTypes['Person'] = ResolversParentTypes['Person']> = {
   countryIso2?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -227,6 +297,7 @@ export type PersonEventRegResolvers<ContextType = any, ParentType extends Resolv
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getCompetitions?: Resolver<Array<ResolversTypes['Competition']>, ParentType, ContextType, RequireFields<QueryGetCompetitionsArgs, 'endDate' | 'startDate'>>;
   getTopCubers?: Resolver<Array<ResolversTypes['PersonEventReg']>, ParentType, ContextType, RequireFields<QueryGetTopCubersArgs, 'endDate' | 'rank' | 'startDate'>>;
+  person?: Resolver<Maybe<ResolversTypes['DBPerson']>, ParentType, ContextType, Partial<QueryPersonArgs>>;
 };
 
 export type RegistrationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Registration'] = ResolversParentTypes['Registration']> = {
@@ -246,6 +317,8 @@ export type ResultResolvers<ContextType = any, ParentType extends ResolversParen
 export type Resolvers<ContextType = any> = {
   Comp?: CompResolvers<ContextType>;
   Competition?: CompetitionResolvers<ContextType>;
+  DBPerson?: DbPersonResolvers<ContextType>;
+  DBResult?: DbResultResolvers<ContextType>;
   Person?: PersonResolvers<ContextType>;
   PersonEventReg?: PersonEventRegResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

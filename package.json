@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "workspaces": [
+    "server",
+    "app",
+    "generated"
+  ],
+  "scripts": {
+    "prisma:migrate": "prisma migrate deploy",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:generate": "prisma generate",
+    "prisma:generate:watch": "prisma generate --watch"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.10.1",
+    "prisma": "^4.10.1"
+  }
+}

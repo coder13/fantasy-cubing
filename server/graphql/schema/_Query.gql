@@ -47,6 +47,36 @@ type Comp {
   startDate: String!
 }
 
+type DBPerson {
+  id: String!
+  subid: Int!
+  name: String!
+  countryId: String!
+  gender: String
+
+  results: [DBResult!]
+}
+
+type DBResult {
+  personId: String!
+  personCountryId: String!
+  eventId: String!
+  competitionId: String!
+  roundTypeId: String!
+
+  formatId: String!
+  value1: Int!
+  value2: Int!
+  value3: Int!
+  value4: Int!
+  value5: Int!
+  best: Int!
+  average: Int!
+  pos: Int!
+  regionalSingleRecord: String
+  regionalAverageRecord: String
+}
+
 type Query {
   getCompetitions(startDate: String!, endDate: String!): [Competition!]!
   getTopCubers(
@@ -54,4 +84,5 @@ type Query {
     endDate: String!
     rank: Int!
   ): [PersonEventReg!]!
+  person(wcaId: String): DBPerson
 }

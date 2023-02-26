@@ -9,10 +9,6 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prisma:migrate": "prisma migrate deploy",
-    "prisma:migrate:dev": "prisma migrate dev",
-    "prisma:generate": "prisma generate",
-    "prisma:generate:watch": "prisma generate --watch",
     "graphql:generate": "graphql-codegen --config codegen.ts",
     "graphql:generate:watch": "graphql-codegen --config codegen.ts --watch"
   },
