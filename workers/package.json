@@ -9,17 +9,23 @@
   },
   "dependencies": {
     "@apollo/utils.keyvadapter": "^2.0.0",
+    "@types/bull-arena": "^3.0.7",
     "@types/node": "^18.14.1",
     "@types/node-cron": "^3.0.7",
+    "bee-queue": "^1.5.0",
+    "bull-arena": "^3.30.4",
     "db": "1.0.0",
     "dotenv": "^16.0.3",
     "keyv": "^4.5.2",
     "node-cron": "^3.0.2",
+    "redis": "^4.6.5",
     "shared": "1.0.0",
     "tsc": "^2.0.4",
     "typescript": "^4.9.5"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "@total-typescript/ts-reset": "^0.3.7",
+    "nodemon": "^2.0.20",
+    "tslint": "^6.1.3"
   }
 }

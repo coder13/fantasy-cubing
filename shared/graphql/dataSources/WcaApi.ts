@@ -6,7 +6,6 @@ import { ApiCompetition, ApiResult } from "types";
 export class WcaApi extends RESTDataSource {
   constructor(options: { cache?: KeyValueCache, baseURL?: string } = {}) {
     super(options);
-    console.log(process.env.WCA_ORIGIN);
     this.baseURL = `${options.baseURL || process.env.WCA_ORIGIN}/api/v0/`;
   }
 
