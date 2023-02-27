@@ -58,6 +58,14 @@ model Result {
   @@map("Results")
 }
 
+model WcaLiveCompetition {
+  wcaId     String @db.VarChar(32)
+  wcaLiveId Int
+
+  @@id([wcaId, wcaLiveId])
+  @@map("WcaLiveCompetitions")
+}
+
 model Session {
   id        String   @id
   sid       String   @unique

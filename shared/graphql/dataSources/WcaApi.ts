@@ -3,12 +3,11 @@ import { KeyValueCache } from "apollo-server-core";
 import { Competition } from "@wca/helpers";
 import { ApiCompetition, ApiResult } from "types";
 
-
 export class WcaApi extends RESTDataSource {
-  constructor(options: { cache: KeyValueCache, wcaOrigin?: string }) {
+  constructor(options: { cache?: KeyValueCache, baseURL?: string } = {}) {
     super(options);
     console.log(process.env.WCA_ORIGIN);
-    this.baseURL = `${options.wcaOrigin || process.env.WCA_ORIGIN}/api/v0/`;
+    this.baseURL = `${options.baseURL || process.env.WCA_ORIGIN}/api/v0/`;
   }
 
   async fetchMany<T>(

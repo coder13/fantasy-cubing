@@ -59,6 +59,15 @@ export type Result = {
 }
 
 /**
+ * Model WcaLiveCompetition
+ * 
+ */
+export type WcaLiveCompetition = {
+  wcaId: string
+  wcaLiveId: number
+}
+
+/**
  * Model Session
  * 
  */
@@ -252,6 +261,16 @@ export class PrismaClient<
     * ```
     */
   get result(): Prisma.ResultDelegate<GlobalReject>;
+
+  /**
+   * `prisma.wcaLiveCompetition`: Exposes CRUD operations for the **WcaLiveCompetition** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more WcaLiveCompetitions
+    * const wcaLiveCompetitions = await prisma.wcaLiveCompetition.findMany()
+    * ```
+    */
+  get wcaLiveCompetition(): Prisma.WcaLiveCompetitionDelegate<GlobalReject>;
 
   /**
    * `prisma.session`: Exposes CRUD operations for the **Session** model.
@@ -764,6 +783,7 @@ export namespace Prisma {
     Competition: 'Competition',
     Person: 'Person',
     Result: 'Result',
+    WcaLiveCompetition: 'WcaLiveCompetition',
     Session: 'Session',
     User: 'User',
     Team: 'Team',
@@ -4090,6 +4110,898 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well.
      */
     include?: ResultInclude | null
+  }
+
+
+
+  /**
+   * Model WcaLiveCompetition
+   */
+
+
+  export type AggregateWcaLiveCompetition = {
+    _count: WcaLiveCompetitionCountAggregateOutputType | null
+    _avg: WcaLiveCompetitionAvgAggregateOutputType | null
+    _sum: WcaLiveCompetitionSumAggregateOutputType | null
+    _min: WcaLiveCompetitionMinAggregateOutputType | null
+    _max: WcaLiveCompetitionMaxAggregateOutputType | null
+  }
+
+  export type WcaLiveCompetitionAvgAggregateOutputType = {
+    wcaLiveId: number | null
+  }
+
+  export type WcaLiveCompetitionSumAggregateOutputType = {
+    wcaLiveId: number | null
+  }
+
+  export type WcaLiveCompetitionMinAggregateOutputType = {
+    wcaId: string | null
+    wcaLiveId: number | null
+  }
+
+  export type WcaLiveCompetitionMaxAggregateOutputType = {
+    wcaId: string | null
+    wcaLiveId: number | null
+  }
+
+  export type WcaLiveCompetitionCountAggregateOutputType = {
+    wcaId: number
+    wcaLiveId: number
+    _all: number
+  }
+
+
+  export type WcaLiveCompetitionAvgAggregateInputType = {
+    wcaLiveId?: true
+  }
+
+  export type WcaLiveCompetitionSumAggregateInputType = {
+    wcaLiveId?: true
+  }
+
+  export type WcaLiveCompetitionMinAggregateInputType = {
+    wcaId?: true
+    wcaLiveId?: true
+  }
+
+  export type WcaLiveCompetitionMaxAggregateInputType = {
+    wcaId?: true
+    wcaLiveId?: true
+  }
+
+  export type WcaLiveCompetitionCountAggregateInputType = {
+    wcaId?: true
+    wcaLiveId?: true
+    _all?: true
+  }
+
+  export type WcaLiveCompetitionAggregateArgs = {
+    /**
+     * Filter which WcaLiveCompetition to aggregate.
+     */
+    where?: WcaLiveCompetitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WcaLiveCompetitions to fetch.
+     */
+    orderBy?: Enumerable<WcaLiveCompetitionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WcaLiveCompetitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WcaLiveCompetitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WcaLiveCompetitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned WcaLiveCompetitions
+    **/
+    _count?: true | WcaLiveCompetitionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WcaLiveCompetitionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WcaLiveCompetitionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WcaLiveCompetitionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WcaLiveCompetitionMaxAggregateInputType
+  }
+
+  export type GetWcaLiveCompetitionAggregateType<T extends WcaLiveCompetitionAggregateArgs> = {
+        [P in keyof T & keyof AggregateWcaLiveCompetition]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWcaLiveCompetition[P]>
+      : GetScalarType<T[P], AggregateWcaLiveCompetition[P]>
+  }
+
+
+
+
+  export type WcaLiveCompetitionGroupByArgs = {
+    where?: WcaLiveCompetitionWhereInput
+    orderBy?: Enumerable<WcaLiveCompetitionOrderByWithAggregationInput>
+    by: WcaLiveCompetitionScalarFieldEnum[]
+    having?: WcaLiveCompetitionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WcaLiveCompetitionCountAggregateInputType | true
+    _avg?: WcaLiveCompetitionAvgAggregateInputType
+    _sum?: WcaLiveCompetitionSumAggregateInputType
+    _min?: WcaLiveCompetitionMinAggregateInputType
+    _max?: WcaLiveCompetitionMaxAggregateInputType
+  }
+
+
+  export type WcaLiveCompetitionGroupByOutputType = {
+    wcaId: string
+    wcaLiveId: number
+    _count: WcaLiveCompetitionCountAggregateOutputType | null
+    _avg: WcaLiveCompetitionAvgAggregateOutputType | null
+    _sum: WcaLiveCompetitionSumAggregateOutputType | null
+    _min: WcaLiveCompetitionMinAggregateOutputType | null
+    _max: WcaLiveCompetitionMaxAggregateOutputType | null
+  }
+
+  type GetWcaLiveCompetitionGroupByPayload<T extends WcaLiveCompetitionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<WcaLiveCompetitionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WcaLiveCompetitionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WcaLiveCompetitionGroupByOutputType[P]>
+            : GetScalarType<T[P], WcaLiveCompetitionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WcaLiveCompetitionSelect = {
+    wcaId?: boolean
+    wcaLiveId?: boolean
+  }
+
+
+  export type WcaLiveCompetitionGetPayload<S extends boolean | null | undefined | WcaLiveCompetitionArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? WcaLiveCompetition :
+    S extends undefined ? never :
+    S extends { include: any } & (WcaLiveCompetitionArgs | WcaLiveCompetitionFindManyArgs)
+    ? WcaLiveCompetition 
+    : S extends { select: any } & (WcaLiveCompetitionArgs | WcaLiveCompetitionFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof WcaLiveCompetition ? WcaLiveCompetition[P] : never
+  } 
+      : WcaLiveCompetition
+
+
+  type WcaLiveCompetitionCountArgs = 
+    Omit<WcaLiveCompetitionFindManyArgs, 'select' | 'include'> & {
+      select?: WcaLiveCompetitionCountAggregateInputType | true
+    }
+
+  export interface WcaLiveCompetitionDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one WcaLiveCompetition that matches the filter.
+     * @param {WcaLiveCompetitionFindUniqueArgs} args - Arguments to find a WcaLiveCompetition
+     * @example
+     * // Get one WcaLiveCompetition
+     * const wcaLiveCompetition = await prisma.wcaLiveCompetition.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends WcaLiveCompetitionFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, WcaLiveCompetitionFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'WcaLiveCompetition'> extends True ? Prisma__WcaLiveCompetitionClient<WcaLiveCompetitionGetPayload<T>> : Prisma__WcaLiveCompetitionClient<WcaLiveCompetitionGetPayload<T> | null, null>
+
+    /**
+     * Find one WcaLiveCompetition that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {WcaLiveCompetitionFindUniqueOrThrowArgs} args - Arguments to find a WcaLiveCompetition
+     * @example
+     * // Get one WcaLiveCompetition
+     * const wcaLiveCompetition = await prisma.wcaLiveCompetition.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends WcaLiveCompetitionFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, WcaLiveCompetitionFindUniqueOrThrowArgs>
+    ): Prisma__WcaLiveCompetitionClient<WcaLiveCompetitionGetPayload<T>>
+
+    /**
+     * Find the first WcaLiveCompetition that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WcaLiveCompetitionFindFirstArgs} args - Arguments to find a WcaLiveCompetition
+     * @example
+     * // Get one WcaLiveCompetition
+     * const wcaLiveCompetition = await prisma.wcaLiveCompetition.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends WcaLiveCompetitionFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, WcaLiveCompetitionFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'WcaLiveCompetition'> extends True ? Prisma__WcaLiveCompetitionClient<WcaLiveCompetitionGetPayload<T>> : Prisma__WcaLiveCompetitionClient<WcaLiveCompetitionGetPayload<T> | null, null>
+
+    /**
+     * Find the first WcaLiveCompetition that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WcaLiveCompetitionFindFirstOrThrowArgs} args - Arguments to find a WcaLiveCompetition
+     * @example
+     * // Get one WcaLiveCompetition
+     * const wcaLiveCompetition = await prisma.wcaLiveCompetition.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends WcaLiveCompetitionFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, WcaLiveCompetitionFindFirstOrThrowArgs>
+    ): Prisma__WcaLiveCompetitionClient<WcaLiveCompetitionGetPayload<T>>
+
+    /**
+     * Find zero or more WcaLiveCompetitions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WcaLiveCompetitionFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all WcaLiveCompetitions
+     * const wcaLiveCompetitions = await prisma.wcaLiveCompetition.findMany()
+     * 
+     * // Get first 10 WcaLiveCompetitions
+     * const wcaLiveCompetitions = await prisma.wcaLiveCompetition.findMany({ take: 10 })
+     * 
+     * // Only select the `wcaId`
+     * const wcaLiveCompetitionWithWcaIdOnly = await prisma.wcaLiveCompetition.findMany({ select: { wcaId: true } })
+     * 
+    **/
+    findMany<T extends WcaLiveCompetitionFindManyArgs>(
+      args?: SelectSubset<T, WcaLiveCompetitionFindManyArgs>
+    ): Prisma.PrismaPromise<Array<WcaLiveCompetitionGetPayload<T>>>
+
+    /**
+     * Create a WcaLiveCompetition.
+     * @param {WcaLiveCompetitionCreateArgs} args - Arguments to create a WcaLiveCompetition.
+     * @example
+     * // Create one WcaLiveCompetition
+     * const WcaLiveCompetition = await prisma.wcaLiveCompetition.create({
+     *   data: {
+     *     // ... data to create a WcaLiveCompetition
+     *   }
+     * })
+     * 
+    **/
+    create<T extends WcaLiveCompetitionCreateArgs>(
+      args: SelectSubset<T, WcaLiveCompetitionCreateArgs>
+    ): Prisma__WcaLiveCompetitionClient<WcaLiveCompetitionGetPayload<T>>
+
+    /**
+     * Create many WcaLiveCompetitions.
+     *     @param {WcaLiveCompetitionCreateManyArgs} args - Arguments to create many WcaLiveCompetitions.
+     *     @example
+     *     // Create many WcaLiveCompetitions
+     *     const wcaLiveCompetition = await prisma.wcaLiveCompetition.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends WcaLiveCompetitionCreateManyArgs>(
+      args?: SelectSubset<T, WcaLiveCompetitionCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a WcaLiveCompetition.
+     * @param {WcaLiveCompetitionDeleteArgs} args - Arguments to delete one WcaLiveCompetition.
+     * @example
+     * // Delete one WcaLiveCompetition
+     * const WcaLiveCompetition = await prisma.wcaLiveCompetition.delete({
+     *   where: {
+     *     // ... filter to delete one WcaLiveCompetition
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends WcaLiveCompetitionDeleteArgs>(
+      args: SelectSubset<T, WcaLiveCompetitionDeleteArgs>
+    ): Prisma__WcaLiveCompetitionClient<WcaLiveCompetitionGetPayload<T>>
+
+    /**
+     * Update one WcaLiveCompetition.
+     * @param {WcaLiveCompetitionUpdateArgs} args - Arguments to update one WcaLiveCompetition.
+     * @example
+     * // Update one WcaLiveCompetition
+     * const wcaLiveCompetition = await prisma.wcaLiveCompetition.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends WcaLiveCompetitionUpdateArgs>(
+      args: SelectSubset<T, WcaLiveCompetitionUpdateArgs>
+    ): Prisma__WcaLiveCompetitionClient<WcaLiveCompetitionGetPayload<T>>
+
+    /**
+     * Delete zero or more WcaLiveCompetitions.
+     * @param {WcaLiveCompetitionDeleteManyArgs} args - Arguments to filter WcaLiveCompetitions to delete.
+     * @example
+     * // Delete a few WcaLiveCompetitions
+     * const { count } = await prisma.wcaLiveCompetition.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends WcaLiveCompetitionDeleteManyArgs>(
+      args?: SelectSubset<T, WcaLiveCompetitionDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WcaLiveCompetitions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WcaLiveCompetitionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many WcaLiveCompetitions
+     * const wcaLiveCompetition = await prisma.wcaLiveCompetition.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends WcaLiveCompetitionUpdateManyArgs>(
+      args: SelectSubset<T, WcaLiveCompetitionUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one WcaLiveCompetition.
+     * @param {WcaLiveCompetitionUpsertArgs} args - Arguments to update or create a WcaLiveCompetition.
+     * @example
+     * // Update or create a WcaLiveCompetition
+     * const wcaLiveCompetition = await prisma.wcaLiveCompetition.upsert({
+     *   create: {
+     *     // ... data to create a WcaLiveCompetition
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the WcaLiveCompetition we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends WcaLiveCompetitionUpsertArgs>(
+      args: SelectSubset<T, WcaLiveCompetitionUpsertArgs>
+    ): Prisma__WcaLiveCompetitionClient<WcaLiveCompetitionGetPayload<T>>
+
+    /**
+     * Count the number of WcaLiveCompetitions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WcaLiveCompetitionCountArgs} args - Arguments to filter WcaLiveCompetitions to count.
+     * @example
+     * // Count the number of WcaLiveCompetitions
+     * const count = await prisma.wcaLiveCompetition.count({
+     *   where: {
+     *     // ... the filter for the WcaLiveCompetitions we want to count
+     *   }
+     * })
+    **/
+    count<T extends WcaLiveCompetitionCountArgs>(
+      args?: Subset<T, WcaLiveCompetitionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WcaLiveCompetitionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a WcaLiveCompetition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WcaLiveCompetitionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WcaLiveCompetitionAggregateArgs>(args: Subset<T, WcaLiveCompetitionAggregateArgs>): Prisma.PrismaPromise<GetWcaLiveCompetitionAggregateType<T>>
+
+    /**
+     * Group by WcaLiveCompetition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WcaLiveCompetitionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WcaLiveCompetitionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WcaLiveCompetitionGroupByArgs['orderBy'] }
+        : { orderBy?: WcaLiveCompetitionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WcaLiveCompetitionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWcaLiveCompetitionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for WcaLiveCompetition.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__WcaLiveCompetitionClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * WcaLiveCompetition base type for findUnique actions
+   */
+  export type WcaLiveCompetitionFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the WcaLiveCompetition
+     */
+    select?: WcaLiveCompetitionSelect | null
+    /**
+     * Filter, which WcaLiveCompetition to fetch.
+     */
+    where: WcaLiveCompetitionWhereUniqueInput
+  }
+
+  /**
+   * WcaLiveCompetition findUnique
+   */
+  export interface WcaLiveCompetitionFindUniqueArgs extends WcaLiveCompetitionFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * WcaLiveCompetition findUniqueOrThrow
+   */
+  export type WcaLiveCompetitionFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the WcaLiveCompetition
+     */
+    select?: WcaLiveCompetitionSelect | null
+    /**
+     * Filter, which WcaLiveCompetition to fetch.
+     */
+    where: WcaLiveCompetitionWhereUniqueInput
+  }
+
+
+  /**
+   * WcaLiveCompetition base type for findFirst actions
+   */
+  export type WcaLiveCompetitionFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the WcaLiveCompetition
+     */
+    select?: WcaLiveCompetitionSelect | null
+    /**
+     * Filter, which WcaLiveCompetition to fetch.
+     */
+    where?: WcaLiveCompetitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WcaLiveCompetitions to fetch.
+     */
+    orderBy?: Enumerable<WcaLiveCompetitionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WcaLiveCompetitions.
+     */
+    cursor?: WcaLiveCompetitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WcaLiveCompetitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WcaLiveCompetitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WcaLiveCompetitions.
+     */
+    distinct?: Enumerable<WcaLiveCompetitionScalarFieldEnum>
+  }
+
+  /**
+   * WcaLiveCompetition findFirst
+   */
+  export interface WcaLiveCompetitionFindFirstArgs extends WcaLiveCompetitionFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * WcaLiveCompetition findFirstOrThrow
+   */
+  export type WcaLiveCompetitionFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the WcaLiveCompetition
+     */
+    select?: WcaLiveCompetitionSelect | null
+    /**
+     * Filter, which WcaLiveCompetition to fetch.
+     */
+    where?: WcaLiveCompetitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WcaLiveCompetitions to fetch.
+     */
+    orderBy?: Enumerable<WcaLiveCompetitionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WcaLiveCompetitions.
+     */
+    cursor?: WcaLiveCompetitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WcaLiveCompetitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WcaLiveCompetitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WcaLiveCompetitions.
+     */
+    distinct?: Enumerable<WcaLiveCompetitionScalarFieldEnum>
+  }
+
+
+  /**
+   * WcaLiveCompetition findMany
+   */
+  export type WcaLiveCompetitionFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the WcaLiveCompetition
+     */
+    select?: WcaLiveCompetitionSelect | null
+    /**
+     * Filter, which WcaLiveCompetitions to fetch.
+     */
+    where?: WcaLiveCompetitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WcaLiveCompetitions to fetch.
+     */
+    orderBy?: Enumerable<WcaLiveCompetitionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing WcaLiveCompetitions.
+     */
+    cursor?: WcaLiveCompetitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WcaLiveCompetitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WcaLiveCompetitions.
+     */
+    skip?: number
+    distinct?: Enumerable<WcaLiveCompetitionScalarFieldEnum>
+  }
+
+
+  /**
+   * WcaLiveCompetition create
+   */
+  export type WcaLiveCompetitionCreateArgs = {
+    /**
+     * Select specific fields to fetch from the WcaLiveCompetition
+     */
+    select?: WcaLiveCompetitionSelect | null
+    /**
+     * The data needed to create a WcaLiveCompetition.
+     */
+    data: XOR<WcaLiveCompetitionCreateInput, WcaLiveCompetitionUncheckedCreateInput>
+  }
+
+
+  /**
+   * WcaLiveCompetition createMany
+   */
+  export type WcaLiveCompetitionCreateManyArgs = {
+    /**
+     * The data used to create many WcaLiveCompetitions.
+     */
+    data: Enumerable<WcaLiveCompetitionCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * WcaLiveCompetition update
+   */
+  export type WcaLiveCompetitionUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the WcaLiveCompetition
+     */
+    select?: WcaLiveCompetitionSelect | null
+    /**
+     * The data needed to update a WcaLiveCompetition.
+     */
+    data: XOR<WcaLiveCompetitionUpdateInput, WcaLiveCompetitionUncheckedUpdateInput>
+    /**
+     * Choose, which WcaLiveCompetition to update.
+     */
+    where: WcaLiveCompetitionWhereUniqueInput
+  }
+
+
+  /**
+   * WcaLiveCompetition updateMany
+   */
+  export type WcaLiveCompetitionUpdateManyArgs = {
+    /**
+     * The data used to update WcaLiveCompetitions.
+     */
+    data: XOR<WcaLiveCompetitionUpdateManyMutationInput, WcaLiveCompetitionUncheckedUpdateManyInput>
+    /**
+     * Filter which WcaLiveCompetitions to update
+     */
+    where?: WcaLiveCompetitionWhereInput
+  }
+
+
+  /**
+   * WcaLiveCompetition upsert
+   */
+  export type WcaLiveCompetitionUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the WcaLiveCompetition
+     */
+    select?: WcaLiveCompetitionSelect | null
+    /**
+     * The filter to search for the WcaLiveCompetition to update in case it exists.
+     */
+    where: WcaLiveCompetitionWhereUniqueInput
+    /**
+     * In case the WcaLiveCompetition found by the `where` argument doesn't exist, create a new WcaLiveCompetition with this data.
+     */
+    create: XOR<WcaLiveCompetitionCreateInput, WcaLiveCompetitionUncheckedCreateInput>
+    /**
+     * In case the WcaLiveCompetition was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WcaLiveCompetitionUpdateInput, WcaLiveCompetitionUncheckedUpdateInput>
+  }
+
+
+  /**
+   * WcaLiveCompetition delete
+   */
+  export type WcaLiveCompetitionDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the WcaLiveCompetition
+     */
+    select?: WcaLiveCompetitionSelect | null
+    /**
+     * Filter which WcaLiveCompetition to delete.
+     */
+    where: WcaLiveCompetitionWhereUniqueInput
+  }
+
+
+  /**
+   * WcaLiveCompetition deleteMany
+   */
+  export type WcaLiveCompetitionDeleteManyArgs = {
+    /**
+     * Filter which WcaLiveCompetitions to delete
+     */
+    where?: WcaLiveCompetitionWhereInput
+  }
+
+
+  /**
+   * WcaLiveCompetition without action
+   */
+  export type WcaLiveCompetitionArgs = {
+    /**
+     * Select specific fields to fetch from the WcaLiveCompetition
+     */
+    select?: WcaLiveCompetitionSelect | null
   }
 
 
@@ -8039,6 +8951,14 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+  export const WcaLiveCompetitionScalarFieldEnum: {
+    wcaId: 'wcaId',
+    wcaLiveId: 'wcaLiveId'
+  };
+
+  export type WcaLiveCompetitionScalarFieldEnum = (typeof WcaLiveCompetitionScalarFieldEnum)[keyof typeof WcaLiveCompetitionScalarFieldEnum]
+
+
   /**
    * Deep Input Types
    */
@@ -8237,6 +9157,41 @@ export namespace Prisma {
     points?: IntNullableWithAggregatesFilter | number | null
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
+  }
+
+  export type WcaLiveCompetitionWhereInput = {
+    AND?: Enumerable<WcaLiveCompetitionWhereInput>
+    OR?: Enumerable<WcaLiveCompetitionWhereInput>
+    NOT?: Enumerable<WcaLiveCompetitionWhereInput>
+    wcaId?: StringFilter | string
+    wcaLiveId?: IntFilter | number
+  }
+
+  export type WcaLiveCompetitionOrderByWithRelationInput = {
+    wcaId?: SortOrder
+    wcaLiveId?: SortOrder
+  }
+
+  export type WcaLiveCompetitionWhereUniqueInput = {
+    wcaId_wcaLiveId?: WcaLiveCompetitionWcaIdWcaLiveIdCompoundUniqueInput
+  }
+
+  export type WcaLiveCompetitionOrderByWithAggregationInput = {
+    wcaId?: SortOrder
+    wcaLiveId?: SortOrder
+    _count?: WcaLiveCompetitionCountOrderByAggregateInput
+    _avg?: WcaLiveCompetitionAvgOrderByAggregateInput
+    _max?: WcaLiveCompetitionMaxOrderByAggregateInput
+    _min?: WcaLiveCompetitionMinOrderByAggregateInput
+    _sum?: WcaLiveCompetitionSumOrderByAggregateInput
+  }
+
+  export type WcaLiveCompetitionScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<WcaLiveCompetitionScalarWhereWithAggregatesInput>
+    OR?: Enumerable<WcaLiveCompetitionScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<WcaLiveCompetitionScalarWhereWithAggregatesInput>
+    wcaId?: StringWithAggregatesFilter | string
+    wcaLiveId?: IntWithAggregatesFilter | number
   }
 
   export type SessionWhereInput = {
@@ -8690,6 +9645,41 @@ export namespace Prisma {
     points?: NullableIntFieldUpdateOperationsInput | number | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WcaLiveCompetitionCreateInput = {
+    wcaId: string
+    wcaLiveId: number
+  }
+
+  export type WcaLiveCompetitionUncheckedCreateInput = {
+    wcaId: string
+    wcaLiveId: number
+  }
+
+  export type WcaLiveCompetitionUpdateInput = {
+    wcaId?: StringFieldUpdateOperationsInput | string
+    wcaLiveId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type WcaLiveCompetitionUncheckedUpdateInput = {
+    wcaId?: StringFieldUpdateOperationsInput | string
+    wcaLiveId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type WcaLiveCompetitionCreateManyInput = {
+    wcaId: string
+    wcaLiveId: number
+  }
+
+  export type WcaLiveCompetitionUpdateManyMutationInput = {
+    wcaId?: StringFieldUpdateOperationsInput | string
+    wcaLiveId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type WcaLiveCompetitionUncheckedUpdateManyInput = {
+    wcaId?: StringFieldUpdateOperationsInput | string
+    wcaLiveId?: IntFieldUpdateOperationsInput | number
   }
 
   export type SessionCreateInput = {
@@ -9210,6 +10200,34 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedDateTimeFilter
     _max?: NestedDateTimeFilter
+  }
+
+  export type WcaLiveCompetitionWcaIdWcaLiveIdCompoundUniqueInput = {
+    wcaId: string
+    wcaLiveId: number
+  }
+
+  export type WcaLiveCompetitionCountOrderByAggregateInput = {
+    wcaId?: SortOrder
+    wcaLiveId?: SortOrder
+  }
+
+  export type WcaLiveCompetitionAvgOrderByAggregateInput = {
+    wcaLiveId?: SortOrder
+  }
+
+  export type WcaLiveCompetitionMaxOrderByAggregateInput = {
+    wcaId?: SortOrder
+    wcaLiveId?: SortOrder
+  }
+
+  export type WcaLiveCompetitionMinOrderByAggregateInput = {
+    wcaId?: SortOrder
+    wcaLiveId?: SortOrder
+  }
+
+  export type WcaLiveCompetitionSumOrderByAggregateInput = {
+    wcaLiveId?: SortOrder
   }
 
   export type SessionCountOrderByAggregateInput = {

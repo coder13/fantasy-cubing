@@ -173,11 +173,17 @@ exports.Prisma.UserScalarFieldEnum = makeEnum({
   avatar: 'avatar'
 });
 
+exports.Prisma.WcaLiveCompetitionScalarFieldEnum = makeEnum({
+  wcaId: 'wcaId',
+  wcaLiveId: 'wcaLiveId'
+});
+
 
 exports.Prisma.ModelName = makeEnum({
   Competition: 'Competition',
   Person: 'Person',
   Result: 'Result',
+  WcaLiveCompetition: 'WcaLiveCompetition',
   Session: 'Session',
   User: 'User',
   Team: 'Team',
