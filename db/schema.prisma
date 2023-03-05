@@ -14,7 +14,11 @@ model Competition {
   countryId String   @default("") @db.VarChar(50)
   startDate String
   endDate   String
+  cancelled Boolean
   Results   Result[]
+
+  unofficialResultsUpdatedAt DateTime?
+  officialResultsUpdatedAt   DateTime?
 
   @@map("Competitions")
 }
@@ -22,7 +26,7 @@ model Competition {
 model Person {
   id        String   @id @default("") @db.VarChar(10)
   wcaUserId Int      @default(0) @db.Integer
-  name      String?  @db.VarChar(80)
+  name      String   @db.VarChar(80)
   countryId String   @default("") @db.VarChar(50)
   gender    String?  @default("") @db.Char(1)
   avatar    String?
@@ -34,12 +38,14 @@ model Person {
 model Result {
   competitionId         String  @default("") @db.VarChar(32)
   personId              String  @default("") @db.VarChar(10)
+  personCountryId       String  @default("") @db.VarChar(50)
   eventId               String  @default("") @db.VarChar(6)
   roundTypeId           String  @default("") @db.Char(1)
   formatId              String  @default("") @db.Char(1)
-  pos                   Int     @default(0) @db.SmallInt
+  pos                   Int?    @default(0) @db.SmallInt
   best                  Int     @default(0)
   average               Int     @default(0)
+  attempts              Int[]   @default([])
   regionalSingleRecord  String? @db.Char(3)
   regionalAverageRecord String? @db.Char(3)
 
@@ -48,8 +54,8 @@ model Result {
   year   Int
   points Int?   @default(0)
 
-  updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   person      Person      @relation(fields: [personId], references: [id])
   competition Competition @relation(fields: [competitionId], references: [id])
@@ -74,11 +80,12 @@ model Session {
 }
 
 model User {
-  id     Int     @id @default(autoincrement())
-  name   String  @unique
-  email  String  @unique
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  email  String   @unique
   avatar String?
   Team   Team?
+  roles  String[] @default([])
 }
 
 model Team {

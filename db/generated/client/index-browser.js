@@ -94,7 +94,10 @@ exports.Prisma.CompetitionScalarFieldEnum = makeEnum({
   name: 'name',
   countryId: 'countryId',
   startDate: 'startDate',
-  endDate: 'endDate'
+  endDate: 'endDate',
+  cancelled: 'cancelled',
+  unofficialResultsUpdatedAt: 'unofficialResultsUpdatedAt',
+  officialResultsUpdatedAt: 'officialResultsUpdatedAt'
 });
 
 exports.Prisma.PersonScalarFieldEnum = makeEnum({
@@ -125,20 +128,22 @@ exports.Prisma.QueryMode = makeEnum({
 exports.Prisma.ResultScalarFieldEnum = makeEnum({
   competitionId: 'competitionId',
   personId: 'personId',
+  personCountryId: 'personCountryId',
   eventId: 'eventId',
   roundTypeId: 'roundTypeId',
   formatId: 'formatId',
   pos: 'pos',
   best: 'best',
   average: 'average',
+  attempts: 'attempts',
   regionalSingleRecord: 'regionalSingleRecord',
   regionalAverageRecord: 'regionalAverageRecord',
   date: 'date',
   week: 'week',
   year: 'year',
   points: 'points',
-  updatedAt: 'updatedAt',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 });
 
 exports.Prisma.SessionScalarFieldEnum = makeEnum({
@@ -170,7 +175,8 @@ exports.Prisma.UserScalarFieldEnum = makeEnum({
   id: 'id',
   name: 'name',
   email: 'email',
-  avatar: 'avatar'
+  avatar: 'avatar',
+  roles: 'roles'
 });
 
 exports.Prisma.WcaLiveCompetitionScalarFieldEnum = makeEnum({

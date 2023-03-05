@@ -1,3 +1,4 @@
 {
-  "eslint.workingDirectories": ["app", "server", "workers"]
+  "eslint.workingDirectories": ["app", "server", "workers"],
+  "prettier.configPath": ".prettierrc"
 }

@@ -20,6 +20,9 @@ export type Competition = {
   countryId: string
   startDate: string
   endDate: string
+  cancelled: boolean
+  unofficialResultsUpdatedAt: Date | null
+  officialResultsUpdatedAt: Date | null
 }
 
 /**
@@ -29,7 +32,7 @@ export type Competition = {
 export type Person = {
   id: string
   wcaUserId: number
-  name: string | null
+  name: string
   countryId: string
   gender: string | null
   avatar: string | null
@@ -42,20 +45,22 @@ export type Person = {
 export type Result = {
   competitionId: string
   personId: string
+  personCountryId: string
   eventId: string
   roundTypeId: string
   formatId: string
-  pos: number
+  pos: number | null
   best: number
   average: number
+  attempts: number[]
   regionalSingleRecord: string | null
   regionalAverageRecord: string | null
   date: string
   week: number
   year: number
   points: number | null
-  updatedAt: Date
   createdAt: Date
+  updatedAt: Date
 }
 
 /**
@@ -87,6 +92,7 @@ export type User = {
   name: string
   email: string
   avatar: string | null
+  roles: string[]
 }
 
 /**
@@ -1098,6 +1104,9 @@ export namespace Prisma {
     countryId: string | null
     startDate: string | null
     endDate: string | null
+    cancelled: boolean | null
+    unofficialResultsUpdatedAt: Date | null
+    officialResultsUpdatedAt: Date | null
   }
 
   export type CompetitionMaxAggregateOutputType = {
@@ -1106,6 +1115,9 @@ export namespace Prisma {
     countryId: string | null
     startDate: string | null
     endDate: string | null
+    cancelled: boolean | null
+    unofficialResultsUpdatedAt: Date | null
+    officialResultsUpdatedAt: Date | null
   }
 
   export type CompetitionCountAggregateOutputType = {
@@ -1114,6 +1126,9 @@ export namespace Prisma {
     countryId: number
     startDate: number
     endDate: number
+    cancelled: number
+    unofficialResultsUpdatedAt: number
+    officialResultsUpdatedAt: number
     _all: number
   }
 
@@ -1124,6 +1139,9 @@ export namespace Prisma {
     countryId?: true
     startDate?: true
     endDate?: true
+    cancelled?: true
+    unofficialResultsUpdatedAt?: true
+    officialResultsUpdatedAt?: true
   }
 
   export type CompetitionMaxAggregateInputType = {
@@ -1132,6 +1150,9 @@ export namespace Prisma {
     countryId?: true
     startDate?: true
     endDate?: true
+    cancelled?: true
+    unofficialResultsUpdatedAt?: true
+    officialResultsUpdatedAt?: true
   }
 
   export type CompetitionCountAggregateInputType = {
@@ -1140,6 +1161,9 @@ export namespace Prisma {
     countryId?: true
     startDate?: true
     endDate?: true
+    cancelled?: true
+    unofficialResultsUpdatedAt?: true
+    officialResultsUpdatedAt?: true
     _all?: true
   }
 
@@ -1222,6 +1246,9 @@ export namespace Prisma {
     countryId: string
     startDate: string
     endDate: string
+    cancelled: boolean
+    unofficialResultsUpdatedAt: Date | null
+    officialResultsUpdatedAt: Date | null
     _count: CompetitionCountAggregateOutputType | null
     _min: CompetitionMinAggregateOutputType | null
     _max: CompetitionMaxAggregateOutputType | null
@@ -1247,7 +1274,10 @@ export namespace Prisma {
     countryId?: boolean
     startDate?: boolean
     endDate?: boolean
+    cancelled?: boolean
     Results?: boolean | Competition$ResultsArgs
+    unofficialResultsUpdatedAt?: boolean
+    officialResultsUpdatedAt?: boolean
     _count?: boolean | CompetitionCountOutputTypeArgs
   }
 
@@ -2213,7 +2243,7 @@ export namespace Prisma {
   export type PersonGroupByOutputType = {
     id: string
     wcaUserId: number
-    name: string | null
+    name: string
     countryId: string
     gender: string | null
     avatar: string | null
@@ -3052,6 +3082,7 @@ export namespace Prisma {
     pos: number | null
     best: number | null
     average: number | null
+    attempts: number | null
     week: number | null
     year: number | null
     points: number | null
@@ -3061,6 +3092,7 @@ export namespace Prisma {
     pos: number | null
     best: number | null
     average: number | null
+    attempts: number[] | null
     week: number | null
     year: number | null
     points: number | null
@@ -3069,6 +3101,7 @@ export namespace Prisma {
   export type ResultMinAggregateOutputType = {
     competitionId: string | null
     personId: string | null
+    personCountryId: string | null
     eventId: string | null
     roundTypeId: string | null
     formatId: string | null
@@ -3081,13 +3114,14 @@ export namespace Prisma {
     week: number | null
     year: number | null
     points: number | null
-    updatedAt: Date | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type ResultMaxAggregateOutputType = {
     competitionId: string | null
     personId: string | null
+    personCountryId: string | null
     eventId: string | null
     roundTypeId: string | null
     formatId: string | null
@@ -3100,27 +3134,29 @@ export namespace Prisma {
     week: number | null
     year: number | null
     points: number | null
-    updatedAt: Date | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type ResultCountAggregateOutputType = {
     competitionId: number
     personId: number
+    personCountryId: number
     eventId: number
     roundTypeId: number
     formatId: number
     pos: number
     best: number
     average: number
+    attempts: number
     regionalSingleRecord: number
     regionalAverageRecord: number
     date: number
     week: number
     year: number
     points: number
-    updatedAt: number
     createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -3129,6 +3165,7 @@ export namespace Prisma {
     pos?: true
     best?: true
     average?: true
+    attempts?: true
     week?: true
     year?: true
     points?: true
@@ -3138,6 +3175,7 @@ export namespace Prisma {
     pos?: true
     best?: true
     average?: true
+    attempts?: true
     week?: true
     year?: true
     points?: true
@@ -3146,6 +3184,7 @@ export namespace Prisma {
   export type ResultMinAggregateInputType = {
     competitionId?: true
     personId?: true
+    personCountryId?: true
     eventId?: true
     roundTypeId?: true
     formatId?: true
@@ -3158,13 +3197,14 @@ export namespace Prisma {
     week?: true
     year?: true
     points?: true
-    updatedAt?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type ResultMaxAggregateInputType = {
     competitionId?: true
     personId?: true
+    personCountryId?: true
     eventId?: true
     roundTypeId?: true
     formatId?: true
@@ -3177,27 +3217,29 @@ export namespace Prisma {
     week?: true
     year?: true
     points?: true
-    updatedAt?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type ResultCountAggregateInputType = {
     competitionId?: true
     personId?: true
+    personCountryId?: true
     eventId?: true
     roundTypeId?: true
     formatId?: true
     pos?: true
     best?: true
     average?: true
+    attempts?: true
     regionalSingleRecord?: true
     regionalAverageRecord?: true
     date?: true
     week?: true
     year?: true
     points?: true
-    updatedAt?: true
     createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -3291,20 +3333,22 @@ export namespace Prisma {
   export type ResultGroupByOutputType = {
     competitionId: string
     personId: string
+    personCountryId: string
     eventId: string
     roundTypeId: string
     formatId: string
-    pos: number
+    pos: number | null
     best: number
     average: number
+    attempts: number[]
     regionalSingleRecord: string | null
     regionalAverageRecord: string | null
     date: string
     week: number
     year: number
     points: number | null
-    updatedAt: Date
     createdAt: Date
+    updatedAt: Date
     _count: ResultCountAggregateOutputType | null
     _avg: ResultAvgAggregateOutputType | null
     _sum: ResultSumAggregateOutputType | null
@@ -3329,20 +3373,22 @@ export namespace Prisma {
   export type ResultSelect = {
     competitionId?: boolean
     personId?: boolean
+    personCountryId?: boolean
     eventId?: boolean
     roundTypeId?: boolean
     formatId?: boolean
     pos?: boolean
     best?: boolean
     average?: boolean
+    attempts?: boolean
     regionalSingleRecord?: boolean
     regionalAverageRecord?: boolean
     date?: boolean
     week?: boolean
     year?: boolean
     points?: boolean
-    updatedAt?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
     person?: boolean | PersonArgs
     competition?: boolean | CompetitionArgs
   }
@@ -5920,6 +5966,7 @@ export namespace Prisma {
     name: number
     email: number
     avatar: number
+    roles: number
     _all: number
   }
 
@@ -5951,6 +5998,7 @@ export namespace Prisma {
     name?: true
     email?: true
     avatar?: true
+    roles?: true
     _all?: true
   }
 
@@ -6046,6 +6094,7 @@ export namespace Prisma {
     name: string
     email: string
     avatar: string | null
+    roles: string[]
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -6073,6 +6122,7 @@ export namespace Prisma {
     email?: boolean
     avatar?: boolean
     Team?: boolean | TeamArgs
+    roles?: boolean
   }
 
 
@@ -8842,7 +8892,10 @@ export namespace Prisma {
     name: 'name',
     countryId: 'countryId',
     startDate: 'startDate',
-    endDate: 'endDate'
+    endDate: 'endDate',
+    cancelled: 'cancelled',
+    unofficialResultsUpdatedAt: 'unofficialResultsUpdatedAt',
+    officialResultsUpdatedAt: 'officialResultsUpdatedAt'
   };
 
   export type CompetitionScalarFieldEnum = (typeof CompetitionScalarFieldEnum)[keyof typeof CompetitionScalarFieldEnum]
@@ -8885,20 +8938,22 @@ export namespace Prisma {
   export const ResultScalarFieldEnum: {
     competitionId: 'competitionId',
     personId: 'personId',
+    personCountryId: 'personCountryId',
     eventId: 'eventId',
     roundTypeId: 'roundTypeId',
     formatId: 'formatId',
     pos: 'pos',
     best: 'best',
     average: 'average',
+    attempts: 'attempts',
     regionalSingleRecord: 'regionalSingleRecord',
     regionalAverageRecord: 'regionalAverageRecord',
     date: 'date',
     week: 'week',
     year: 'year',
     points: 'points',
-    updatedAt: 'updatedAt',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type ResultScalarFieldEnum = (typeof ResultScalarFieldEnum)[keyof typeof ResultScalarFieldEnum]
@@ -8945,7 +9000,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     email: 'email',
-    avatar: 'avatar'
+    avatar: 'avatar',
+    roles: 'roles'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -8973,7 +9029,10 @@ export namespace Prisma {
     countryId?: StringFilter | string
     startDate?: StringFilter | string
     endDate?: StringFilter | string
+    cancelled?: BoolFilter | boolean
     Results?: ResultListRelationFilter
+    unofficialResultsUpdatedAt?: DateTimeNullableFilter | Date | string | null
+    officialResultsUpdatedAt?: DateTimeNullableFilter | Date | string | null
   }
 
   export type CompetitionOrderByWithRelationInput = {
@@ -8982,7 +9041,10 @@ export namespace Prisma {
     countryId?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
+    cancelled?: SortOrder
     Results?: ResultOrderByRelationAggregateInput
+    unofficialResultsUpdatedAt?: SortOrder
+    officialResultsUpdatedAt?: SortOrder
   }
 
   export type CompetitionWhereUniqueInput = {
@@ -8995,6 +9057,9 @@ export namespace Prisma {
     countryId?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
+    cancelled?: SortOrder
+    unofficialResultsUpdatedAt?: SortOrder
+    officialResultsUpdatedAt?: SortOrder
     _count?: CompetitionCountOrderByAggregateInput
     _max?: CompetitionMaxOrderByAggregateInput
     _min?: CompetitionMinOrderByAggregateInput
@@ -9009,6 +9074,9 @@ export namespace Prisma {
     countryId?: StringWithAggregatesFilter | string
     startDate?: StringWithAggregatesFilter | string
     endDate?: StringWithAggregatesFilter | string
+    cancelled?: BoolWithAggregatesFilter | boolean
+    unofficialResultsUpdatedAt?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    officialResultsUpdatedAt?: DateTimeNullableWithAggregatesFilter | Date | string | null
   }
 
   export type PersonWhereInput = {
@@ -9017,7 +9085,7 @@ export namespace Prisma {
     NOT?: Enumerable<PersonWhereInput>
     id?: StringFilter | string
     wcaUserId?: IntFilter | number
-    name?: StringNullableFilter | string | null
+    name?: StringFilter | string
     countryId?: StringFilter | string
     gender?: StringNullableFilter | string | null
     avatar?: StringNullableFilter | string | null
@@ -9058,7 +9126,7 @@ export namespace Prisma {
     NOT?: Enumerable<PersonScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
     wcaUserId?: IntWithAggregatesFilter | number
-    name?: StringNullableWithAggregatesFilter | string | null
+    name?: StringWithAggregatesFilter | string
     countryId?: StringWithAggregatesFilter | string
     gender?: StringNullableWithAggregatesFilter | string | null
     avatar?: StringNullableWithAggregatesFilter | string | null
@@ -9070,20 +9138,22 @@ export namespace Prisma {
     NOT?: Enumerable<ResultWhereInput>
     competitionId?: StringFilter | string
     personId?: StringFilter | string
+    personCountryId?: StringFilter | string
     eventId?: StringFilter | string
     roundTypeId?: StringFilter | string
     formatId?: StringFilter | string
-    pos?: IntFilter | number
+    pos?: IntNullableFilter | number | null
     best?: IntFilter | number
     average?: IntFilter | number
+    attempts?: IntNullableListFilter
     regionalSingleRecord?: StringNullableFilter | string | null
     regionalAverageRecord?: StringNullableFilter | string | null
     date?: StringFilter | string
     week?: IntFilter | number
     year?: IntFilter | number
     points?: IntNullableFilter | number | null
-    updatedAt?: DateTimeFilter | Date | string
     createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
     person?: XOR<PersonRelationFilter, PersonWhereInput>
     competition?: XOR<CompetitionRelationFilter, CompetitionWhereInput>
   }
@@ -9091,20 +9161,22 @@ export namespace Prisma {
   export type ResultOrderByWithRelationInput = {
     competitionId?: SortOrder
     personId?: SortOrder
+    personCountryId?: SortOrder
     eventId?: SortOrder
     roundTypeId?: SortOrder
     formatId?: SortOrder
     pos?: SortOrder
     best?: SortOrder
     average?: SortOrder
+    attempts?: SortOrder
     regionalSingleRecord?: SortOrder
     regionalAverageRecord?: SortOrder
     date?: SortOrder
     week?: SortOrder
     year?: SortOrder
     points?: SortOrder
-    updatedAt?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     person?: PersonOrderByWithRelationInput
     competition?: CompetitionOrderByWithRelationInput
   }
@@ -9116,20 +9188,22 @@ export namespace Prisma {
   export type ResultOrderByWithAggregationInput = {
     competitionId?: SortOrder
     personId?: SortOrder
+    personCountryId?: SortOrder
     eventId?: SortOrder
     roundTypeId?: SortOrder
     formatId?: SortOrder
     pos?: SortOrder
     best?: SortOrder
     average?: SortOrder
+    attempts?: SortOrder
     regionalSingleRecord?: SortOrder
     regionalAverageRecord?: SortOrder
     date?: SortOrder
     week?: SortOrder
     year?: SortOrder
     points?: SortOrder
-    updatedAt?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: ResultCountOrderByAggregateInput
     _avg?: ResultAvgOrderByAggregateInput
     _max?: ResultMaxOrderByAggregateInput
@@ -9143,20 +9217,22 @@ export namespace Prisma {
     NOT?: Enumerable<ResultScalarWhereWithAggregatesInput>
     competitionId?: StringWithAggregatesFilter | string
     personId?: StringWithAggregatesFilter | string
+    personCountryId?: StringWithAggregatesFilter | string
     eventId?: StringWithAggregatesFilter | string
     roundTypeId?: StringWithAggregatesFilter | string
     formatId?: StringWithAggregatesFilter | string
-    pos?: IntWithAggregatesFilter | number
+    pos?: IntNullableWithAggregatesFilter | number | null
     best?: IntWithAggregatesFilter | number
     average?: IntWithAggregatesFilter | number
+    attempts?: IntNullableListFilter
     regionalSingleRecord?: StringNullableWithAggregatesFilter | string | null
     regionalAverageRecord?: StringNullableWithAggregatesFilter | string | null
     date?: StringWithAggregatesFilter | string
     week?: IntWithAggregatesFilter | number
     year?: IntWithAggregatesFilter | number
     points?: IntNullableWithAggregatesFilter | number | null
-    updatedAt?: DateTimeWithAggregatesFilter | Date | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
   export type WcaLiveCompetitionWhereInput = {
@@ -9245,6 +9321,7 @@ export namespace Prisma {
     email?: StringFilter | string
     avatar?: StringNullableFilter | string | null
     Team?: XOR<TeamRelationFilter, TeamWhereInput> | null
+    roles?: StringNullableListFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -9253,6 +9330,7 @@ export namespace Prisma {
     email?: SortOrder
     avatar?: SortOrder
     Team?: TeamOrderByWithRelationInput
+    roles?: SortOrder
   }
 
   export type UserWhereUniqueInput = {
@@ -9266,6 +9344,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     avatar?: SortOrder
+    roles?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -9281,6 +9360,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter | string
     email?: StringWithAggregatesFilter | string
     avatar?: StringNullableWithAggregatesFilter | string | null
+    roles?: StringNullableListFilter
   }
 
   export type TeamWhereInput = {
@@ -9395,7 +9475,10 @@ export namespace Prisma {
     countryId?: string
     startDate: string
     endDate: string
+    cancelled: boolean
     Results?: ResultCreateNestedManyWithoutCompetitionInput
+    unofficialResultsUpdatedAt?: Date | string | null
+    officialResultsUpdatedAt?: Date | string | null
   }
 
   export type CompetitionUncheckedCreateInput = {
@@ -9404,7 +9487,10 @@ export namespace Prisma {
     countryId?: string
     startDate: string
     endDate: string
+    cancelled: boolean
     Results?: ResultUncheckedCreateNestedManyWithoutCompetitionInput
+    unofficialResultsUpdatedAt?: Date | string | null
+    officialResultsUpdatedAt?: Date | string | null
   }
 
   export type CompetitionUpdateInput = {
@@ -9413,7 +9499,10 @@ export namespace Prisma {
     countryId?: StringFieldUpdateOperationsInput | string
     startDate?: StringFieldUpdateOperationsInput | string
     endDate?: StringFieldUpdateOperationsInput | string
+    cancelled?: BoolFieldUpdateOperationsInput | boolean
     Results?: ResultUpdateManyWithoutCompetitionNestedInput
+    unofficialResultsUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    officialResultsUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type CompetitionUncheckedUpdateInput = {
@@ -9422,7 +9511,10 @@ export namespace Prisma {
     countryId?: StringFieldUpdateOperationsInput | string
     startDate?: StringFieldUpdateOperationsInput | string
     endDate?: StringFieldUpdateOperationsInput | string
+    cancelled?: BoolFieldUpdateOperationsInput | boolean
     Results?: ResultUncheckedUpdateManyWithoutCompetitionNestedInput
+    unofficialResultsUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    officialResultsUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type CompetitionCreateManyInput = {
@@ -9431,6 +9523,9 @@ export namespace Prisma {
     countryId?: string
     startDate: string
     endDate: string
+    cancelled: boolean
+    unofficialResultsUpdatedAt?: Date | string | null
+    officialResultsUpdatedAt?: Date | string | null
   }
 
   export type CompetitionUpdateManyMutationInput = {
@@ -9439,6 +9534,9 @@ export namespace Prisma {
     countryId?: StringFieldUpdateOperationsInput | string
     startDate?: StringFieldUpdateOperationsInput | string
     endDate?: StringFieldUpdateOperationsInput | string
+    cancelled?: BoolFieldUpdateOperationsInput | boolean
+    unofficialResultsUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    officialResultsUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type CompetitionUncheckedUpdateManyInput = {
@@ -9447,12 +9545,15 @@ export namespace Prisma {
     countryId?: StringFieldUpdateOperationsInput | string
     startDate?: StringFieldUpdateOperationsInput | string
     endDate?: StringFieldUpdateOperationsInput | string
+    cancelled?: BoolFieldUpdateOperationsInput | boolean
+    unofficialResultsUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    officialResultsUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PersonCreateInput = {
     id?: string
     wcaUserId?: number
-    name?: string | null
+    name: string
     countryId?: string
     gender?: string | null
     avatar?: string | null
@@ -9462,7 +9563,7 @@ export namespace Prisma {
   export type PersonUncheckedCreateInput = {
     id?: string
     wcaUserId?: number
-    name?: string | null
+    name: string
     countryId?: string
     gender?: string | null
     avatar?: string | null
@@ -9472,7 +9573,7 @@ export namespace Prisma {
   export type PersonUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     wcaUserId?: IntFieldUpdateOperationsInput | number
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
     countryId?: StringFieldUpdateOperationsInput | string
     gender?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9482,7 +9583,7 @@ export namespace Prisma {
   export type PersonUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     wcaUserId?: IntFieldUpdateOperationsInput | number
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
     countryId?: StringFieldUpdateOperationsInput | string
     gender?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9492,7 +9593,7 @@ export namespace Prisma {
   export type PersonCreateManyInput = {
     id?: string
     wcaUserId?: number
-    name?: string | null
+    name: string
     countryId?: string
     gender?: string | null
     avatar?: string | null
@@ -9501,7 +9602,7 @@ export namespace Prisma {
   export type PersonUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     wcaUserId?: IntFieldUpdateOperationsInput | number
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
     countryId?: StringFieldUpdateOperationsInput | string
     gender?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9510,27 +9611,29 @@ export namespace Prisma {
   export type PersonUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     wcaUserId?: IntFieldUpdateOperationsInput | number
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
     countryId?: StringFieldUpdateOperationsInput | string
     gender?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ResultCreateInput = {
+    personCountryId?: string
     eventId?: string
     roundTypeId?: string
     formatId?: string
-    pos?: number
+    pos?: number | null
     best?: number
     average?: number
+    attempts?: ResultCreateattemptsInput | Enumerable<number>
     regionalSingleRecord?: string | null
     regionalAverageRecord?: string | null
     date: string
     week: number
     year: number
     points?: number | null
-    updatedAt?: Date | string
     createdAt?: Date | string
+    updatedAt?: Date | string
     person?: PersonCreateNestedOneWithoutResultsInput
     competition?: CompetitionCreateNestedOneWithoutResultsInput
   }
@@ -9538,37 +9641,41 @@ export namespace Prisma {
   export type ResultUncheckedCreateInput = {
     competitionId?: string
     personId?: string
+    personCountryId?: string
     eventId?: string
     roundTypeId?: string
     formatId?: string
-    pos?: number
+    pos?: number | null
     best?: number
     average?: number
+    attempts?: ResultCreateattemptsInput | Enumerable<number>
     regionalSingleRecord?: string | null
     regionalAverageRecord?: string | null
     date: string
     week: number
     year: number
     points?: number | null
-    updatedAt?: Date | string
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ResultUpdateInput = {
+    personCountryId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     roundTypeId?: StringFieldUpdateOperationsInput | string
     formatId?: StringFieldUpdateOperationsInput | string
-    pos?: IntFieldUpdateOperationsInput | number
+    pos?: NullableIntFieldUpdateOperationsInput | number | null
     best?: IntFieldUpdateOperationsInput | number
     average?: IntFieldUpdateOperationsInput | number
+    attempts?: ResultUpdateattemptsInput | Enumerable<number>
     regionalSingleRecord?: NullableStringFieldUpdateOperationsInput | string | null
     regionalAverageRecord?: NullableStringFieldUpdateOperationsInput | string | null
     date?: StringFieldUpdateOperationsInput | string
     week?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
     points?: NullableIntFieldUpdateOperationsInput | number | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     person?: PersonUpdateOneRequiredWithoutResultsNestedInput
     competition?: CompetitionUpdateOneRequiredWithoutResultsNestedInput
   }
@@ -9576,75 +9683,83 @@ export namespace Prisma {
   export type ResultUncheckedUpdateInput = {
     competitionId?: StringFieldUpdateOperationsInput | string
     personId?: StringFieldUpdateOperationsInput | string
+    personCountryId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     roundTypeId?: StringFieldUpdateOperationsInput | string
     formatId?: StringFieldUpdateOperationsInput | string
-    pos?: IntFieldUpdateOperationsInput | number
+    pos?: NullableIntFieldUpdateOperationsInput | number | null
     best?: IntFieldUpdateOperationsInput | number
     average?: IntFieldUpdateOperationsInput | number
+    attempts?: ResultUpdateattemptsInput | Enumerable<number>
     regionalSingleRecord?: NullableStringFieldUpdateOperationsInput | string | null
     regionalAverageRecord?: NullableStringFieldUpdateOperationsInput | string | null
     date?: StringFieldUpdateOperationsInput | string
     week?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
     points?: NullableIntFieldUpdateOperationsInput | number | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ResultCreateManyInput = {
     competitionId?: string
     personId?: string
+    personCountryId?: string
     eventId?: string
     roundTypeId?: string
     formatId?: string
-    pos?: number
+    pos?: number | null
     best?: number
     average?: number
+    attempts?: ResultCreateattemptsInput | Enumerable<number>
     regionalSingleRecord?: string | null
     regionalAverageRecord?: string | null
     date: string
     week: number
     year: number
     points?: number | null
-    updatedAt?: Date | string
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ResultUpdateManyMutationInput = {
+    personCountryId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     roundTypeId?: StringFieldUpdateOperationsInput | string
     formatId?: StringFieldUpdateOperationsInput | string
-    pos?: IntFieldUpdateOperationsInput | number
+    pos?: NullableIntFieldUpdateOperationsInput | number | null
     best?: IntFieldUpdateOperationsInput | number
     average?: IntFieldUpdateOperationsInput | number
+    attempts?: ResultUpdateattemptsInput | Enumerable<number>
     regionalSingleRecord?: NullableStringFieldUpdateOperationsInput | string | null
     regionalAverageRecord?: NullableStringFieldUpdateOperationsInput | string | null
     date?: StringFieldUpdateOperationsInput | string
     week?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
     points?: NullableIntFieldUpdateOperationsInput | number | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ResultUncheckedUpdateManyInput = {
     competitionId?: StringFieldUpdateOperationsInput | string
     personId?: StringFieldUpdateOperationsInput | string
+    personCountryId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     roundTypeId?: StringFieldUpdateOperationsInput | string
     formatId?: StringFieldUpdateOperationsInput | string
-    pos?: IntFieldUpdateOperationsInput | number
+    pos?: NullableIntFieldUpdateOperationsInput | number | null
     best?: IntFieldUpdateOperationsInput | number
     average?: IntFieldUpdateOperationsInput | number
+    attempts?: ResultUpdateattemptsInput | Enumerable<number>
     regionalSingleRecord?: NullableStringFieldUpdateOperationsInput | string | null
     regionalAverageRecord?: NullableStringFieldUpdateOperationsInput | string | null
     date?: StringFieldUpdateOperationsInput | string
     week?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
     points?: NullableIntFieldUpdateOperationsInput | number | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WcaLiveCompetitionCreateInput = {
@@ -9736,6 +9851,7 @@ export namespace Prisma {
     email: string
     avatar?: string | null
     Team?: TeamCreateNestedOneWithoutUserInput
+    roles?: UserCreaterolesInput | Enumerable<string>
   }
 
   export type UserUncheckedCreateInput = {
@@ -9744,6 +9860,7 @@ export namespace Prisma {
     email: string
     avatar?: string | null
     Team?: TeamUncheckedCreateNestedOneWithoutUserInput
+    roles?: UserCreaterolesInput | Enumerable<string>
   }
 
   export type UserUpdateInput = {
@@ -9751,6 +9868,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     Team?: TeamUpdateOneWithoutUserNestedInput
+    roles?: UserUpdaterolesInput | Enumerable<string>
   }
 
   export type UserUncheckedUpdateInput = {
@@ -9759,6 +9877,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     Team?: TeamUncheckedUpdateOneWithoutUserNestedInput
+    roles?: UserUpdaterolesInput | Enumerable<string>
   }
 
   export type UserCreateManyInput = {
@@ -9766,12 +9885,14 @@ export namespace Prisma {
     name: string
     email: string
     avatar?: string | null
+    roles?: UserCreaterolesInput | Enumerable<string>
   }
 
   export type UserUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    roles?: UserUpdaterolesInput | Enumerable<string>
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -9779,6 +9900,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    roles?: UserUpdaterolesInput | Enumerable<string>
   }
 
   export type TeamCreateInput = {
@@ -9911,10 +10033,26 @@ export namespace Prisma {
     not?: NestedStringFilter | string
   }
 
+  export type BoolFilter = {
+    equals?: boolean
+    not?: NestedBoolFilter | boolean
+  }
+
   export type ResultListRelationFilter = {
     every?: ResultWhereInput
     some?: ResultWhereInput
     none?: ResultWhereInput
+  }
+
+  export type DateTimeNullableFilter = {
+    equals?: Date | string | null
+    in?: Enumerable<Date> | Enumerable<string> | null
+    notIn?: Enumerable<Date> | Enumerable<string> | null
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeNullableFilter | Date | string | null
   }
 
   export type ResultOrderByRelationAggregateInput = {
@@ -9927,6 +10065,9 @@ export namespace Prisma {
     countryId?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
+    cancelled?: SortOrder
+    unofficialResultsUpdatedAt?: SortOrder
+    officialResultsUpdatedAt?: SortOrder
   }
 
   export type CompetitionMaxOrderByAggregateInput = {
@@ -9935,6 +10076,9 @@ export namespace Prisma {
     countryId?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
+    cancelled?: SortOrder
+    unofficialResultsUpdatedAt?: SortOrder
+    officialResultsUpdatedAt?: SortOrder
   }
 
   export type CompetitionMinOrderByAggregateInput = {
@@ -9943,6 +10087,9 @@ export namespace Prisma {
     countryId?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
+    cancelled?: SortOrder
+    unofficialResultsUpdatedAt?: SortOrder
+    officialResultsUpdatedAt?: SortOrder
   }
 
   export type StringWithAggregatesFilter = {
@@ -9961,6 +10108,28 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedStringFilter
     _max?: NestedStringFilter
+  }
+
+  export type BoolWithAggregatesFilter = {
+    equals?: boolean
+    not?: NestedBoolWithAggregatesFilter | boolean
+    _count?: NestedIntFilter
+    _min?: NestedBoolFilter
+    _max?: NestedBoolFilter
+  }
+
+  export type DateTimeNullableWithAggregatesFilter = {
+    equals?: Date | string | null
+    in?: Enumerable<Date> | Enumerable<string> | null
+    notIn?: Enumerable<Date> | Enumerable<string> | null
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedDateTimeNullableFilter
+    _max?: NestedDateTimeNullableFilter
   }
 
   export type IntFilter = {
@@ -10069,6 +10238,14 @@ export namespace Prisma {
     not?: NestedIntNullableFilter | number | null
   }
 
+  export type IntNullableListFilter = {
+    equals?: Enumerable<number> | null
+    has?: number | null
+    hasEvery?: Enumerable<number>
+    hasSome?: Enumerable<number>
+    isEmpty?: boolean
+  }
+
   export type DateTimeFilter = {
     equals?: Date | string
     in?: Enumerable<Date> | Enumerable<string>
@@ -10100,26 +10277,29 @@ export namespace Prisma {
   export type ResultCountOrderByAggregateInput = {
     competitionId?: SortOrder
     personId?: SortOrder
+    personCountryId?: SortOrder
     eventId?: SortOrder
     roundTypeId?: SortOrder
     formatId?: SortOrder
     pos?: SortOrder
     best?: SortOrder
     average?: SortOrder
+    attempts?: SortOrder
     regionalSingleRecord?: SortOrder
     regionalAverageRecord?: SortOrder
     date?: SortOrder
     week?: SortOrder
     year?: SortOrder
     points?: SortOrder
-    updatedAt?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type ResultAvgOrderByAggregateInput = {
     pos?: SortOrder
     best?: SortOrder
     average?: SortOrder
+    attempts?: SortOrder
     week?: SortOrder
     year?: SortOrder
     points?: SortOrder
@@ -10128,6 +10308,7 @@ export namespace Prisma {
   export type ResultMaxOrderByAggregateInput = {
     competitionId?: SortOrder
     personId?: SortOrder
+    personCountryId?: SortOrder
     eventId?: SortOrder
     roundTypeId?: SortOrder
     formatId?: SortOrder
@@ -10140,13 +10321,14 @@ export namespace Prisma {
     week?: SortOrder
     year?: SortOrder
     points?: SortOrder
-    updatedAt?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type ResultMinOrderByAggregateInput = {
     competitionId?: SortOrder
     personId?: SortOrder
+    personCountryId?: SortOrder
     eventId?: SortOrder
     roundTypeId?: SortOrder
     formatId?: SortOrder
@@ -10159,14 +10341,15 @@ export namespace Prisma {
     week?: SortOrder
     year?: SortOrder
     points?: SortOrder
-    updatedAt?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type ResultSumOrderByAggregateInput = {
     pos?: SortOrder
     best?: SortOrder
     average?: SortOrder
+    attempts?: SortOrder
     week?: SortOrder
     year?: SortOrder
     points?: SortOrder
@@ -10256,11 +10439,20 @@ export namespace Prisma {
     isNot?: TeamWhereInput | null
   }
 
+  export type StringNullableListFilter = {
+    equals?: Enumerable<string> | null
+    has?: string | null
+    hasEvery?: Enumerable<string>
+    hasSome?: Enumerable<string>
+    isEmpty?: boolean
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
     avatar?: SortOrder
+    roles?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -10397,6 +10589,10 @@ export namespace Prisma {
     set?: string
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type ResultUpdateManyWithoutCompetitionNestedInput = {
     create?: XOR<Enumerable<ResultCreateWithoutCompetitionInput>, Enumerable<ResultUncheckedCreateWithoutCompetitionInput>>
     connectOrCreate?: Enumerable<ResultCreateOrConnectWithoutCompetitionInput>
@@ -10409,6 +10605,10 @@ export namespace Prisma {
     update?: Enumerable<ResultUpdateWithWhereUniqueWithoutCompetitionInput>
     updateMany?: Enumerable<ResultUpdateManyWithWhereWithoutCompetitionInput>
     deleteMany?: Enumerable<ResultScalarWhereInput>
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type ResultUncheckedUpdateManyWithoutCompetitionNestedInput = {
@@ -10479,6 +10679,10 @@ export namespace Prisma {
     deleteMany?: Enumerable<ResultScalarWhereInput>
   }
 
+  export type ResultCreateattemptsInput = {
+    set: Enumerable<number>
+  }
+
   export type PersonCreateNestedOneWithoutResultsInput = {
     create?: XOR<PersonCreateWithoutResultsInput, PersonUncheckedCreateWithoutResultsInput>
     connectOrCreate?: PersonCreateOrConnectWithoutResultsInput
@@ -10497,6 +10701,11 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type ResultUpdateattemptsInput = {
+    set?: Enumerable<number>
+    push?: number | Enumerable<number>
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -10525,6 +10734,10 @@ export namespace Prisma {
     connect?: TeamWhereUniqueInput
   }
 
+  export type UserCreaterolesInput = {
+    set: Enumerable<string>
+  }
+
   export type TeamUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<TeamCreateWithoutUserInput, TeamUncheckedCreateWithoutUserInput>
     connectOrCreate?: TeamCreateOrConnectWithoutUserInput
@@ -10539,6 +10752,11 @@ export namespace Prisma {
     delete?: boolean
     connect?: TeamWhereUniqueInput
     update?: XOR<TeamUpdateWithoutUserInput, TeamUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserUpdaterolesInput = {
+    set?: Enumerable<string>
+    push?: string | Enumerable<string>
   }
 
   export type TeamUncheckedUpdateOneWithoutUserNestedInput = {
@@ -10635,6 +10853,22 @@ export namespace Prisma {
     not?: NestedStringFilter | string
   }
 
+  export type NestedBoolFilter = {
+    equals?: boolean
+    not?: NestedBoolFilter | boolean
+  }
+
+  export type NestedDateTimeNullableFilter = {
+    equals?: Date | string | null
+    in?: Enumerable<Date> | Enumerable<string> | null
+    notIn?: Enumerable<Date> | Enumerable<string> | null
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeNullableFilter | Date | string | null
+  }
+
   export type NestedStringWithAggregatesFilter = {
     equals?: string
     in?: Enumerable<string>
@@ -10661,6 +10895,39 @@ export namespace Prisma {
     gt?: number
     gte?: number
     not?: NestedIntFilter | number
+  }
+
+  export type NestedBoolWithAggregatesFilter = {
+    equals?: boolean
+    not?: NestedBoolWithAggregatesFilter | boolean
+    _count?: NestedIntFilter
+    _min?: NestedBoolFilter
+    _max?: NestedBoolFilter
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter = {
+    equals?: Date | string | null
+    in?: Enumerable<Date> | Enumerable<string> | null
+    notIn?: Enumerable<Date> | Enumerable<string> | null
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedDateTimeNullableFilter
+    _max?: NestedDateTimeNullableFilter
+  }
+
+  export type NestedIntNullableFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | null
+    notIn?: Enumerable<number> | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntNullableFilter | number | null
   }
 
   export type NestedStringNullableFilter = {
@@ -10721,17 +10988,6 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter
   }
 
-  export type NestedIntNullableFilter = {
-    equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntNullableFilter | number | null
-  }
-
   export type NestedDateTimeFilter = {
     equals?: Date | string
     in?: Enumerable<Date> | Enumerable<string>
@@ -10785,39 +11041,43 @@ export namespace Prisma {
   }
 
   export type ResultCreateWithoutCompetitionInput = {
+    personCountryId?: string
     eventId?: string
     roundTypeId?: string
     formatId?: string
-    pos?: number
+    pos?: number | null
     best?: number
     average?: number
+    attempts?: ResultCreateattemptsInput | Enumerable<number>
     regionalSingleRecord?: string | null
     regionalAverageRecord?: string | null
     date: string
     week: number
     year: number
     points?: number | null
-    updatedAt?: Date | string
     createdAt?: Date | string
+    updatedAt?: Date | string
     person?: PersonCreateNestedOneWithoutResultsInput
   }
 
   export type ResultUncheckedCreateWithoutCompetitionInput = {
     personId?: string
+    personCountryId?: string
     eventId?: string
     roundTypeId?: string
     formatId?: string
-    pos?: number
+    pos?: number | null
     best?: number
     average?: number
+    attempts?: ResultCreateattemptsInput | Enumerable<number>
     regionalSingleRecord?: string | null
     regionalAverageRecord?: string | null
     date: string
     week: number
     year: number
     points?: number | null
-    updatedAt?: Date | string
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ResultCreateOrConnectWithoutCompetitionInput = {
@@ -10852,56 +11112,62 @@ export namespace Prisma {
     NOT?: Enumerable<ResultScalarWhereInput>
     competitionId?: StringFilter | string
     personId?: StringFilter | string
+    personCountryId?: StringFilter | string
     eventId?: StringFilter | string
     roundTypeId?: StringFilter | string
     formatId?: StringFilter | string
-    pos?: IntFilter | number
+    pos?: IntNullableFilter | number | null
     best?: IntFilter | number
     average?: IntFilter | number
+    attempts?: IntNullableListFilter
     regionalSingleRecord?: StringNullableFilter | string | null
     regionalAverageRecord?: StringNullableFilter | string | null
     date?: StringFilter | string
     week?: IntFilter | number
     year?: IntFilter | number
     points?: IntNullableFilter | number | null
-    updatedAt?: DateTimeFilter | Date | string
     createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
   }
 
   export type ResultCreateWithoutPersonInput = {
+    personCountryId?: string
     eventId?: string
     roundTypeId?: string
     formatId?: string
-    pos?: number
+    pos?: number | null
     best?: number
     average?: number
+    attempts?: ResultCreateattemptsInput | Enumerable<number>
     regionalSingleRecord?: string | null
     regionalAverageRecord?: string | null
     date: string
     week: number
     year: number
     points?: number | null
-    updatedAt?: Date | string
     createdAt?: Date | string
+    updatedAt?: Date | string
     competition?: CompetitionCreateNestedOneWithoutResultsInput
   }
 
   export type ResultUncheckedCreateWithoutPersonInput = {
     competitionId?: string
+    personCountryId?: string
     eventId?: string
     roundTypeId?: string
     formatId?: string
-    pos?: number
+    pos?: number | null
     best?: number
     average?: number
+    attempts?: ResultCreateattemptsInput | Enumerable<number>
     regionalSingleRecord?: string | null
     regionalAverageRecord?: string | null
     date: string
     week: number
     year: number
     points?: number | null
-    updatedAt?: Date | string
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ResultCreateOrConnectWithoutPersonInput = {
@@ -10933,7 +11199,7 @@ export namespace Prisma {
   export type PersonCreateWithoutResultsInput = {
     id?: string
     wcaUserId?: number
-    name?: string | null
+    name: string
     countryId?: string
     gender?: string | null
     avatar?: string | null
@@ -10942,7 +11208,7 @@ export namespace Prisma {
   export type PersonUncheckedCreateWithoutResultsInput = {
     id?: string
     wcaUserId?: number
-    name?: string | null
+    name: string
     countryId?: string
     gender?: string | null
     avatar?: string | null
@@ -10959,6 +11225,9 @@ export namespace Prisma {
     countryId?: string
     startDate: string
     endDate: string
+    cancelled: boolean
+    unofficialResultsUpdatedAt?: Date | string | null
+    officialResultsUpdatedAt?: Date | string | null
   }
 
   export type CompetitionUncheckedCreateWithoutResultsInput = {
@@ -10967,6 +11236,9 @@ export namespace Prisma {
     countryId?: string
     startDate: string
     endDate: string
+    cancelled: boolean
+    unofficialResultsUpdatedAt?: Date | string | null
+    officialResultsUpdatedAt?: Date | string | null
   }
 
   export type CompetitionCreateOrConnectWithoutResultsInput = {
@@ -10982,7 +11254,7 @@ export namespace Prisma {
   export type PersonUpdateWithoutResultsInput = {
     id?: StringFieldUpdateOperationsInput | string
     wcaUserId?: IntFieldUpdateOperationsInput | number
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
     countryId?: StringFieldUpdateOperationsInput | string
     gender?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10991,7 +11263,7 @@ export namespace Prisma {
   export type PersonUncheckedUpdateWithoutResultsInput = {
     id?: StringFieldUpdateOperationsInput | string
     wcaUserId?: IntFieldUpdateOperationsInput | number
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
     countryId?: StringFieldUpdateOperationsInput | string
     gender?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11008,6 +11280,9 @@ export namespace Prisma {
     countryId?: StringFieldUpdateOperationsInput | string
     startDate?: StringFieldUpdateOperationsInput | string
     endDate?: StringFieldUpdateOperationsInput | string
+    cancelled?: BoolFieldUpdateOperationsInput | boolean
+    unofficialResultsUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    officialResultsUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type CompetitionUncheckedUpdateWithoutResultsInput = {
@@ -11016,6 +11291,9 @@ export namespace Prisma {
     countryId?: StringFieldUpdateOperationsInput | string
     startDate?: StringFieldUpdateOperationsInput | string
     endDate?: StringFieldUpdateOperationsInput | string
+    cancelled?: BoolFieldUpdateOperationsInput | boolean
+    unofficialResultsUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    officialResultsUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type TeamCreateWithoutUserInput = {
@@ -11083,6 +11361,7 @@ export namespace Prisma {
     name: string
     email: string
     avatar?: string | null
+    roles?: UserCreaterolesInput | Enumerable<string>
   }
 
   export type UserUncheckedCreateWithoutTeamInput = {
@@ -11090,6 +11369,7 @@ export namespace Prisma {
     name: string
     email: string
     avatar?: string | null
+    roles?: UserCreaterolesInput | Enumerable<string>
   }
 
   export type UserCreateOrConnectWithoutTeamInput = {
@@ -11136,6 +11416,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    roles?: UserUpdaterolesInput | Enumerable<string>
   }
 
   export type UserUncheckedUpdateWithoutTeamInput = {
@@ -11143,6 +11424,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    roles?: UserUpdaterolesInput | Enumerable<string>
   }
 
   export type TeamCreateWithoutPicksInput = {
@@ -11179,128 +11461,142 @@ export namespace Prisma {
 
   export type ResultCreateManyCompetitionInput = {
     personId?: string
+    personCountryId?: string
     eventId?: string
     roundTypeId?: string
     formatId?: string
-    pos?: number
+    pos?: number | null
     best?: number
     average?: number
+    attempts?: ResultCreateattemptsInput | Enumerable<number>
     regionalSingleRecord?: string | null
     regionalAverageRecord?: string | null
     date: string
     week: number
     year: number
     points?: number | null
-    updatedAt?: Date | string
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ResultUpdateWithoutCompetitionInput = {
+    personCountryId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     roundTypeId?: StringFieldUpdateOperationsInput | string
     formatId?: StringFieldUpdateOperationsInput | string
-    pos?: IntFieldUpdateOperationsInput | number
+    pos?: NullableIntFieldUpdateOperationsInput | number | null
     best?: IntFieldUpdateOperationsInput | number
     average?: IntFieldUpdateOperationsInput | number
+    attempts?: ResultUpdateattemptsInput | Enumerable<number>
     regionalSingleRecord?: NullableStringFieldUpdateOperationsInput | string | null
     regionalAverageRecord?: NullableStringFieldUpdateOperationsInput | string | null
     date?: StringFieldUpdateOperationsInput | string
     week?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
     points?: NullableIntFieldUpdateOperationsInput | number | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     person?: PersonUpdateOneRequiredWithoutResultsNestedInput
   }
 
   export type ResultUncheckedUpdateWithoutCompetitionInput = {
     personId?: StringFieldUpdateOperationsInput | string
+    personCountryId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     roundTypeId?: StringFieldUpdateOperationsInput | string
     formatId?: StringFieldUpdateOperationsInput | string
-    pos?: IntFieldUpdateOperationsInput | number
+    pos?: NullableIntFieldUpdateOperationsInput | number | null
     best?: IntFieldUpdateOperationsInput | number
     average?: IntFieldUpdateOperationsInput | number
+    attempts?: ResultUpdateattemptsInput | Enumerable<number>
     regionalSingleRecord?: NullableStringFieldUpdateOperationsInput | string | null
     regionalAverageRecord?: NullableStringFieldUpdateOperationsInput | string | null
     date?: StringFieldUpdateOperationsInput | string
     week?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
     points?: NullableIntFieldUpdateOperationsInput | number | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ResultUncheckedUpdateManyWithoutResultsInput = {
     personId?: StringFieldUpdateOperationsInput | string
+    personCountryId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     roundTypeId?: StringFieldUpdateOperationsInput | string
     formatId?: StringFieldUpdateOperationsInput | string
-    pos?: IntFieldUpdateOperationsInput | number
+    pos?: NullableIntFieldUpdateOperationsInput | number | null
     best?: IntFieldUpdateOperationsInput | number
     average?: IntFieldUpdateOperationsInput | number
+    attempts?: ResultUpdateattemptsInput | Enumerable<number>
     regionalSingleRecord?: NullableStringFieldUpdateOperationsInput | string | null
     regionalAverageRecord?: NullableStringFieldUpdateOperationsInput | string | null
     date?: StringFieldUpdateOperationsInput | string
     week?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
     points?: NullableIntFieldUpdateOperationsInput | number | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ResultCreateManyPersonInput = {
     competitionId?: string
+    personCountryId?: string
     eventId?: string
     roundTypeId?: string
     formatId?: string
-    pos?: number
+    pos?: number | null
     best?: number
     average?: number
+    attempts?: ResultCreateattemptsInput | Enumerable<number>
     regionalSingleRecord?: string | null
     regionalAverageRecord?: string | null
     date: string
     week: number
     year: number
     points?: number | null
-    updatedAt?: Date | string
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ResultUpdateWithoutPersonInput = {
+    personCountryId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     roundTypeId?: StringFieldUpdateOperationsInput | string
     formatId?: StringFieldUpdateOperationsInput | string
-    pos?: IntFieldUpdateOperationsInput | number
+    pos?: NullableIntFieldUpdateOperationsInput | number | null
     best?: IntFieldUpdateOperationsInput | number
     average?: IntFieldUpdateOperationsInput | number
+    attempts?: ResultUpdateattemptsInput | Enumerable<number>
     regionalSingleRecord?: NullableStringFieldUpdateOperationsInput | string | null
     regionalAverageRecord?: NullableStringFieldUpdateOperationsInput | string | null
     date?: StringFieldUpdateOperationsInput | string
     week?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
     points?: NullableIntFieldUpdateOperationsInput | number | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     competition?: CompetitionUpdateOneRequiredWithoutResultsNestedInput
   }
 
   export type ResultUncheckedUpdateWithoutPersonInput = {
     competitionId?: StringFieldUpdateOperationsInput | string
+    personCountryId?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
     roundTypeId?: StringFieldUpdateOperationsInput | string
     formatId?: StringFieldUpdateOperationsInput | string
-    pos?: IntFieldUpdateOperationsInput | number
+    pos?: NullableIntFieldUpdateOperationsInput | number | null
     best?: IntFieldUpdateOperationsInput | number
     average?: IntFieldUpdateOperationsInput | number
+    attempts?: ResultUpdateattemptsInput | Enumerable<number>
     regionalSingleRecord?: NullableStringFieldUpdateOperationsInput | string | null
     regionalAverageRecord?: NullableStringFieldUpdateOperationsInput | string | null
     date?: StringFieldUpdateOperationsInput | string
     week?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
     points?: NullableIntFieldUpdateOperationsInput | number | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PicksCreateManyTeamInput = {

@@ -1,10 +1,16 @@
-import { QueryResolvers } from '../../../generated/graphql'
+import { QueryResolvers } from 'index';
 import { AppContext } from '../../../server';
 
-export const getCompetitions: QueryResolvers<AppContext>['getCompetitions'] = (
+export const competitions: QueryResolvers<AppContext>['competitions'] = (
   _,
-  { startDate, endDate },
-  { wcaApi },
+  { week, startDate, endDate },
+  { db }
 ) => {
-  return wcaApi.getCompetitions(startDate, endDate);
+  return db.competition.findMany({
+    where: {
+      ...(week && { week }),
+      ...(startDate && { startDate: { gte: startDate } }),
+      ...(endDate && { endDate: { lte: endDate } }),
+    },
+  });
 };

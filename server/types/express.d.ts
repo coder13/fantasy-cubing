@@ -1,13 +1,13 @@
-import { User } from './prisma/generated/client';
+import { User } from "db";
 
 declare module 'express-session' {
-  interface SessionData {
+  export interface SessionData {
     userId?: number;
   }
 }
 
 declare module 'express' {
-  interface Request {
+  export interface Request {
     user?: User;
     sid?: string;
   }

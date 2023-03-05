@@ -6,6 +6,7 @@ export type ApiCompetition = {
   country_iso2: string;
   start_date: string;
   end_date: string;
+  cancelled_at: string | null;
   event_ids: string[];
 };
 

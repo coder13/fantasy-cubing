@@ -1,10 +1,18 @@
 {
+  "extends": "../shared/tsconfig.json",
+  "compilerOptions": {
+    "typeRoots": [
+      "./types/**/*.d.ts"
+    ] /* Specify multiple folders that act like './node_modules/@types'. */
+  },
   "references": [
     {
-      "path": "../db"
+      "path": "../shared"
     },
     {
-      "path": "../shared"
+      "path": "../db"
     }
-  ]
+  ],
+  "outDir": "./",
+  "exclude": ["node_modules", "./dist/**/*"]
 }

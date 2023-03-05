@@ -1,5 +1,5 @@
 import { Request, Router } from "express";
-import prisma from "../db";
+import prisma from "../lib/db";
 
 const router = Router();
 
@@ -53,7 +53,9 @@ router.get('/auth/wca/callback', async (req: Request, res) => {
       throw await response.text();
     }
 
-    const wcaTokens = await response.json();
+    const wcaTokens = await response.json() as {
+      access_token: string;
+    };
 
     const wcaUserResponse = await fetch(`${WCA_ORIGIN}/api/v0/me`, {
       headers: {
@@ -65,12 +67,15 @@ router.get('/auth/wca/callback', async (req: Request, res) => {
       throw await wcaUserResponse.text();
     }
 
-    const wcaUser = (await wcaUserResponse.json()).me as {
-      name: string;
-      email: string;
-      avatar: {
-        url: string;
-        thumb_url: string;
+    const wcaUser = (await wcaUserResponse.json()) as {
+      me: {
+
+        name: string;
+        email: string;
+        avatar: {
+          url: string;
+          thumb_url: string;
+        }
       }
     };
 
@@ -78,17 +83,17 @@ router.get('/auth/wca/callback', async (req: Request, res) => {
 
     const user = await prisma.user.upsert({
       where: {
-        email: wcaUser.email,
+        email: wcaUser.me.email,
       },
       update: {
-        name: wcaUser.name,
-        email: wcaUser.email,
-        avatar: wcaUser.avatar?.url,
+        name: wcaUser.me.name,
+        email: wcaUser.me.email,
+        avatar: wcaUser.me.avatar?.url,
       },
       create: {
-        name: wcaUser.name,
-        email: wcaUser.email,
-        avatar: wcaUser.avatar?.url,
+        name: wcaUser.me.name,
+        email: wcaUser.me.email,
+        avatar: wcaUser.me.avatar?.url,
       },
     });
 

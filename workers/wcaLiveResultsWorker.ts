@@ -1,13 +1,13 @@
-import BeeQueue from "bee-queue";
-import { prisma, redisClient } from "./shared";
-import { Round, RoundResult, WcaLiveApi } from "shared";
-import { fetchAndUpsertComp } from "./competitions";
+import BeeQueue from 'bee-queue';
+import { prisma, redisClient } from './shared';
+import { WcaLive, WcaLiveApi, currentWeek, currentYear } from 'shared';
+import { fetchAndUpsertComp } from './competitions';
 
 type RoundTypeId = '1' | '2' | '3' | 'c' | 'd' | 'e' | 'f';
-function roundTypeIdFromRound(round: Round): RoundTypeId | undefined {
+function roundTypeIdFromRound(round: WcaLive.Round): RoundTypeId | undefined {
   switch (round.name) {
-    case "Final":
-      return round.cutoff ? 'c' : 'f'
+    case 'Final':
+      return round.cutoff ? 'c' : 'f';
     case 'First Round':
       return round.cutoff ? 'd' : '1';
     case 'Second Round':
@@ -21,16 +21,28 @@ function roundTypeIdFromRound(round: Round): RoundTypeId | undefined {
 
 type params = {
   competitionId: string;
-}
+};
 
 export const createQueue = (options: BeeQueue.QueueSettings = {}) => {
   return new BeeQueue<params>('wcaLiveResults', {
     redis: redisClient,
     ...options,
   });
-}
+};
 
 async function fetchFromWcaLive(competitionId: string) {
+  const competition =
+    (await prisma.competition.findFirst({
+      where: {
+        id: competitionId,
+        cancelled: false,
+      },
+    })) || (await fetchAndUpsertComp(competitionId));
+
+  if (!competition) {
+    return;
+  }
+
   const wcaLive = await prisma.wcaLiveCompetition.findFirst({
     where: {
       wcaId: competitionId,
@@ -46,81 +58,141 @@ async function fetchFromWcaLive(competitionId: string) {
     baseURL: process.env.WCA_LIVE_ORIGIN,
   }).results(wcaLive.wcaLiveId.toString());
 
-  console.log(37, results);
-
   if (results.errors) {
-    console.error(results.errors)
+    console.error(results.errors);
     return;
   }
 
   if (!results?.data?.competition) {
-    throw new Error('No results found for ' + competitionId)
+    console.log('No results found for ' + competitionId);
+    return;
   }
 
-  const competition = await prisma.competition.findFirst({
-    where: {
-      id: competitionId,
-    },
-  }) || await fetchAndUpsertComp(competitionId);
+  const trans = await prisma.$transaction([
+    ...results.data.competition.events
+      .flatMap((event) =>
+        event.rounds.flatMap((round) => {
+          const roundTypeId = roundTypeIdFromRound(round);
+          if (!results || !roundTypeId) {
+            return;
+          }
 
-  const trans = await prisma.$transaction(
-    results.data.competition.events.flatMap((event) => event.rounds.flatMap((round) => {
-      const roundTypeId = roundTypeIdFromRound(round);
-      if (!results || !roundTypeId) {
-        return;
-      }
+          const filteredResults = round.results
+            ?.filter((result) => !!result && result.person.wcaId)
+            .filter(Boolean);
 
-      const filteredResults = round.results?.filter((result) => !!result && result.person.wcaId).filter(Boolean)
+          return filteredResults.map((result) => {
+            const resultUpdatingCommon = {
+              pos: result.pos,
+              best: result.best || 0,
+              average: result.average || 0,
+              regionalSingleRecord:
+                result.singleRecordTag === 'PR' ? '' : result.singleRecordTag,
+              regionalAverageRecord:
+                result.averageRecordTag === 'PR' ? '' : result.averageRecordTag,
+              attempts: result.attempts.map((attempt) => attempt.result),
+            };
 
-      return filteredResults.map((result) => prisma.result.upsert(({
-        where: {
-          competitionId_eventId_roundTypeId_personId: {
-            competitionId,
-            eventId: event.event.id,
-            roundTypeId,
-            personId: result.person.wcaId,
-          },
-        },
-        update: {
-          pos: result.pos,
-          best: result.best || 0,
-          average: result.average || 0,
-          regionalSingleRecord: result.singleRecordTag === 'PR' ? '' : result.singleRecordTag,
-          regionalAverageRecord: result.averageRecordTag === 'PR' ? '' : result.averageRecordTag,
-        },
-        create: {
-          eventId: event.event.id,
-          roundTypeId,
-          competition: {
-            connect: {
-              id: competitionId,
-            },
-          },
-          person: {
-            connectOrCreate: {
+            return prisma.result.upsert({
               where: {
-                id: result.person.wcaId,
+                competitionId_eventId_roundTypeId_personId: {
+                  competitionId,
+                  eventId: event.event.id,
+                  roundTypeId,
+                  personId: result.person.wcaId,
+                },
               },
+              update: resultUpdatingCommon,
               create: {
-                id: result.person.wcaId,
-                name: result.person.name,
-                countryId: result.person.country.iso2,
+                eventId: event.event.id,
+                roundTypeId,
+                competition: {
+                  connect: {
+                    id: competitionId,
+                  },
+                },
+                person: {
+                  connectOrCreate: {
+                    where: {
+                      id: result.person.wcaId,
+                    },
+                    create: {
+                      id: result.person.wcaId,
+                      name: result.person.name,
+                      countryId: result.person.country.iso2,
+                    },
+                  },
+                },
+                ...resultUpdatingCommon,
+                personCountryId: result.person.country.iso2,
+                date: competition.startDate,
+                week: currentWeek(),
+                year: currentYear(),
               },
-            },
-          },
-          pos: result.pos,
-          best: result.best || 0,
-          average: result.average || 0,
-          regionalSingleRecord: result.singleRecordTag === 'PR' ? '' : result.singleRecordTag,
-          regionalAverageRecord: result.averageRecordTag === 'PR' ? '' : result.averageRecordTag,
-          date: competition.startDate,
-          week: 0,
-          year: 0,
-        }
-      })))
-    })).filter(Boolean));
+            });
+          });
+        })
+      )
+      .filter(Boolean),
+    prisma.competition.update({
+      where: {
+        id: competitionId,
+      },
+      data: {
+        unofficialResultsUpdatedAt: new Date(),
+      },
+    }),
+  ]);
 
-  console.log('Upserted', trans.length, 'results from wca live')
+  console.log('Upserted', trans.length - 1, 'results from wca live');
 }
 
-fetchFromWcaLive('SleeplessinSeattle2023')
+export default function startWorker() {
+  const resultsQueue = createQueue();
+
+  resultsQueue.on('ready', () => {
+    console.log('[WCA Live Results]', 'Queue now ready to start doing things');
+  });
+
+  resultsQueue.on('error', (err) => {
+    console.error('[WCA Live Results]', 'Error in results queue', err);
+  });
+
+  resultsQueue.on('retrying', (job) => {
+    console.log('[WCA Live Results]', 'Retrying job', job.id);
+  });
+
+  resultsQueue.on('failed', (job, err) => {
+    console.error('[WCA Live Results]', 'Job failed', job.id, err);
+  });
+
+  resultsQueue.on('stalled', (jobId) => {
+    console.log('[WCA Live Results]', 'Job stalled', jobId);
+  });
+
+  resultsQueue.on('succeeded', (job) => {
+    console.log('[WCA Live Results]', 'Job succeeded', job.id);
+  });
+
+  resultsQueue.process(
+    async (
+      job: BeeQueue.Job<params>,
+      done: BeeQueue.DoneCallback<null | Error>
+    ) => {
+      console.log('Processing job', job.id, job.data);
+      if (!job.data.competitionId) {
+        throw new Error('Missing competitionId');
+      }
+
+      try {
+        await fetchFromWcaLive(job.data.competitionId);
+        done(null);
+      } catch (e) {
+        console.log(e);
+        throw e;
+      }
+    }
+  );
+
+  return resultsQueue;
+}

@@ -1,88 +1,12 @@
-type Competition {
-  id: ID!
-  name: String!
-  start_date: String!
-  end_date: String!
-  competitor_limit: Int!
-  country_iso2: String!
-  city: String!
-  event_ids: [String!]!
-
-  persons: [Person!]
-}
-
-type Person {
-  name: String!
-  wcaUserId: Int!
-  wcaId: String
-  countryIso2: String!
-  registration: Registration
-}
-
-type Registration {
-  status: String!
-  eventIds: [String!]!
-}
-
-type PersonEventReg {
-  name: String!
-  wcaId: String
-  countryIso2: String!
-  eventId: String!
-  single: Result
-  average: Result
-  competition: Comp!
-}
-
-type Result {
-  value: Int!
-  worldRanking: Int!
-  continentalRanking: Int!
-  nationalRanking: Int!
-}
-
-type Comp {
-  id: String!
-  name: String!
-  startDate: String!
-}
-
-type DBPerson {
-  id: String!
-  subid: Int!
-  name: String!
-  countryId: String!
-  gender: String
-
-  results: [DBResult!]
-}
-
-type DBResult {
-  personId: String!
-  personCountryId: String!
-  eventId: String!
-  competitionId: String!
-  roundTypeId: String!
-
-  formatId: String!
-  value1: Int!
-  value2: Int!
-  value3: Int!
-  value4: Int!
-  value5: Int!
-  best: Int!
-  average: Int!
-  pos: Int!
-  regionalSingleRecord: String
-  regionalAverageRecord: String
-}
-
 type Query {
-  getCompetitions(startDate: String!, endDate: String!): [Competition!]!
-  getTopCubers(
-    startDate: String!
-    endDate: String!
-    rank: Int!
-  ): [PersonEventReg!]!
-  person(wcaId: String): DBPerson
+  # getTopCubers(
+  #   startDate: String!
+  #   endDate: String!
+  #   rank: Int!
+  # ): [PersonEventReg!]!
+
+  competition(id: String!): Competition
+  competitions(week: Int, startDate: String, endDate: String): [Competition!]!
+  person(wcaId: String!): Person
+  results(weekYear: weekYear, eventId: String): [Result!]
 }

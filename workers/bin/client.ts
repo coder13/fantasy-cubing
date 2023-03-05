@@ -7,13 +7,19 @@ import { createQueue as createResultsQueue } from '../resultsWorker';
 
 if (command === 'results' && paramValue) {
   const resultsQueue = createResultsQueue({
-    isWorker: false
+    isWorker: false,
   });
 
-  resultsQueue.createJob({ competitionId: paramValue }).timeout(10000).retries(2).save().then((job) => {
-    console.log('Job created', job.id);
-    resultsQueue.destroy();
-  }).catch((e) => {
-    console.error('Error creating job', e);
-  });
+  resultsQueue
+    .createJob({ competitionId: paramValue })
+    .timeout(10000)
+    .retries(2)
+    .save()
+    .then((job) => {
+      console.log('Job created', job.id);
+      resultsQueue.destroy();
+    })
+    .catch((e) => {
+      console.error('Error creating job', e);
+    });
 }

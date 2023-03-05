@@ -1,10 +1,11 @@
-import { QueryResolvers } from "../../../generated/graphql";
-import { AppContext } from "../../../server";
+import { QueryResolvers } from 'index';
+import { AppContext } from '../../../server';
+import prisma from '../../../lib/db';
 
-export const person: QueryResolvers<AppContext>["person"] = async (
-  _,
-  { wcaId },
-  { db }
-) => {
-  db.persons.findUnique({ where: { wcaId } });
-}
+export const person: QueryResolvers<AppContext>['person'] = (_, { wcaId }) => {
+  return prisma.person.findFirst({
+    where: {
+      id: wcaId,
+    },
+  });
+};

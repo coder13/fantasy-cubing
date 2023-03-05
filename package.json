@@ -1,11 +1,10 @@
 {
   "private": true,
   "workspaces": [
-    "server",
-    "app",
-    "generated",
-    "db",
-    "workers",
-    "shared"
+    "@fantasycubing/server",
+    "@fantasycubing/app",
+    "@fantasycubing/db",
+    "@fantasycubing/workers",
+    "@fantasycubing/shared"
   ]
 }

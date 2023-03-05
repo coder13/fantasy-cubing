@@ -1,6 +1,6 @@
-import { RESTDataSource } from "@apollo/datasource-rest";
-import { KeyValueCache } from "apollo-server-core";
-import { GraphQLError } from "graphql-request/dist/types";
+import { RESTDataSource } from '@apollo/datasource-rest';
+import { KeyValueCache } from 'apollo-server-core';
+import { GraphQLError } from 'graphql-request/dist/types';
 
 const competitionsQuery = `
   query GetCompetitions($from: Date!) {
@@ -9,7 +9,7 @@ const competitionsQuery = `
       wca_id
     }
   }
-`
+`;
 
 const resultsQuery = `
 query Competition($id: ID!) {
@@ -44,6 +44,10 @@ fragment roundResult on Result {
   }
   best
   average
+  attempts {
+    result
+    __typename
+  }
   person {
     id
     wcaId
@@ -51,80 +55,82 @@ fragment roundResult on Result {
     country {
       iso2
       name
+      __typename
+    }
     __typename
-  }
-  __typename
   }
   singleRecordTag
   averageRecordTag
   __typename
 }
-`
+`;
 
-export type RoundResult = {
-  pos: number;
-  // attempts: {
-  //   result: number;
-  //   __typename: string;
-  // }[];
-  best: number | null;
-  average: number | null;
-  person: {
-    name: string;
-    wcaId: string;
-    country: {
-      iso2: string;
+export namespace WcaLive {
+  export type RoundResult = {
+    pos: number;
+    attempts: {
+      result: number;
+      __typename: string;
+    }[];
+    best: number | null;
+    average: number | null;
+    person: {
       name: string;
+      wcaId: string;
+      country: {
+        iso2: string;
+        name: string;
+        __typename: string;
+      };
       __typename: string;
     };
+    singleRecordTag: string | null;
+    averageRecordTag: string | null;
     __typename: string;
   };
-  singleRecordTag: string | null;
-  averageRecordTag: string | null;
-  __typename: string;
-};
 
-export type Round = {
-  id: string;
-  name: string;
-  number: number;
-  cutoff: {
-    numberOfAttempts: number;
-    attemptResult: number;
-  } | null;
-  results: (RoundResult | null)[];
-  __typename: string;
-};
-
-export type CompetitionEvent = {
-  id: string;
-  event: {
+  export type Round = {
     id: string;
-  },
-  rounds: Round[];
-  __typename: string;
-};
-
-export type Competition = {
-  id: string;
-  events: CompetitionEvent[];
-  __typename: string;
-};
-
-export class WcaLiveApi extends RESTDataSource {
-  constructor(options: { cache?: KeyValueCache, baseURL?: string } = {}) {
-    super(options);
-
-    this.baseURL = options.baseURL || process.env.WCA_LIVE_ORIGIN
+    name: string;
+    number: number;
+    cutoff: {
+      numberOfAttempts: number;
+      attemptResult: number;
+    } | null;
+    results: (RoundResult | null)[];
+    __typename: string;
   };
 
+  export type CompetitionEvent = {
+    id: string;
+    event: {
+      id: string;
+    };
+    rounds: Round[];
+    __typename: string;
+  };
+
+  export type Competition = {
+    id: string;
+    events: CompetitionEvent[];
+    __typename: string;
+  };
+}
+
+export class WcaLiveApi extends RESTDataSource {
+  constructor(options: { cache?: KeyValueCache; baseURL?: string } = {}) {
+    super(options);
+
+    this.baseURL = options.baseURL || process.env.WCA_LIVE_ORIGIN;
+  }
+
   query<T>(query: string, variables: any) {
-    return this.post<{ data: T, errors?: GraphQLError[] }>('/api', {
+    return this.post<{ data: T; errors?: GraphQLError[] }>('/api', {
       body: {
         query,
-        variables
-      }
-    })
+        variables,
+      },
+    });
   }
 
   competitions(from: string) {
@@ -132,11 +138,13 @@ export class WcaLiveApi extends RESTDataSource {
       competitions: {
         id: string;
         wca_id: string;
-      }[]
-    }>(competitionsQuery, { from })
+      }[];
+    }>(competitionsQuery, { from });
   }
 
   results(id: string) {
-    return this.query<{ competition: Competition }>(resultsQuery, { id })
+    return this.query<{ competition: WcaLive.Competition }>(resultsQuery, {
+      id,
+    });
   }
 }

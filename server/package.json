@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "@fantasycubing/server",
   "version": "0.0.1",
   "description": "",
   "main": "server.js",
@@ -18,6 +18,8 @@
     "@apollo/datasource-rest": "^5.0.2",
     "@apollo/server": "^4.4.0",
     "@apollo/utils.keyvadapter": "^2.0.0",
+    "@fantasycubing/shared": "^1.0.0",
+    "@fantasycubing/workers": "^1.0.0",
     "@keyv/redis": "^2.5.5",
     "@prisma/client": "^4.10.1",
     "@wca/helpers": "^1.1.4",

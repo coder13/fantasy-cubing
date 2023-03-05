@@ -1,10 +1,10 @@
-import { WcaApi } from 'shared';
+import { WcaApi, currentWeek, currentYear } from 'shared';
 import { cache, prisma, redisClient } from './shared';
 import { fetchAndUpsertComp } from './competitions';
 import BeeQueue from 'bee-queue';
 
 type params = {
-  competitionId: string
+  competitionId: string;
 };
 
 export const createQueue = (options: BeeQueue.QueueSettings = {}) => {
@@ -12,24 +12,42 @@ export const createQueue = (options: BeeQueue.QueueSettings = {}) => {
     redis: redisClient,
     ...options,
   });
-}
+};
 
 async function fetchFromApi(competitionId: string) {
-  const results = await new WcaApi(
-    { cache, baseURL: process.env.WCA_ORIGIN }
-  ).getResults(competitionId);
+  const results = await new WcaApi({
+    cache,
+    baseURL: process.env.WCA_ORIGIN,
+  }).getResults(competitionId);
 
-  const competition = await prisma.competition.findFirst({
-    where: {
-      id: competitionId,
-    },
-  }) || await fetchAndUpsertComp(competitionId);
+  const competition =
+    (await prisma.competition.findFirst({
+      where: {
+        id: competitionId,
+        cancelled: false,
+      },
+    })) || (await fetchAndUpsertComp(competitionId));
 
-  console.log(`Found ${results.length} results for ${competitionId} (${competition.name})`)
+  if (!competition) {
+    return;
+  }
 
-  const trans = await prisma.$transaction(
-    results.map((result) => prisma.result.upsert(
-      {
+  console.log(
+    `Found ${results.length} results for ${competitionId} (${competition.name})`
+  );
+
+  const trans = await prisma.$transaction([
+    ...results.map((result) => {
+      const resultUpdatingCommon = {
+        pos: result.pos,
+        best: result.best,
+        average: result.average,
+        regionalSingleRecord: result.regional_single_record,
+        regionalAverageRecord: result.regional_average_record,
+        personCountryId: result.country_iso2,
+      };
+
+      return prisma.result.upsert({
         where: {
           competitionId_eventId_roundTypeId_personId: {
             competitionId,
@@ -38,13 +56,7 @@ async function fetchFromApi(competitionId: string) {
             personId: result.wca_id,
           },
         },
-        update: {
-          pos: result.pos,
-          best: result.best,
-          average: result.average,
-          regionalSingleRecord: result.regional_single_record,
-          regionalAverageRecord: result.regional_average_record,
-        },
+        update: resultUpdatingCommon,
         create: {
           eventId: result.event_id,
           roundTypeId: result.round_type_id,
@@ -62,23 +74,27 @@ async function fetchFromApi(competitionId: string) {
                 id: result.wca_id,
                 name: result.name,
                 countryId: result.country_iso2,
-              }
+              },
             },
           },
-          pos: result.pos,
-          best: result.best,
-          average: result.average,
-          regionalSingleRecord: result.regional_single_record,
-          regionalAverageRecord: result.regional_average_record,
+          ...resultUpdatingCommon,
           date: competition.startDate,
-          week: 0,
-          year: 0,
+          week: currentWeek(),
+          year: currentYear(),
         },
-      }
-    ))
-  );
+      });
+    }),
+    prisma.competition.update({
+      where: {
+        id: competitionId,
+      },
+      data: {
+        officialResultsUpdatedAt: new Date(),
+      },
+    }),
+  ]);
 
-  console.log('Upserted', trans.length, 'results');
+  console.log('Upserted', trans.length - 1, 'results');
 }
 
 export default function startWorker() {
@@ -108,38 +124,25 @@ export default function startWorker() {
     console.log('[Results]', 'Job succeeded', job.id);
   });
 
-  resultsQueue.process(async (job: BeeQueue.Job<params>, done: BeeQueue.DoneCallback<null | Error>) => {
-    console.log('Processing job', job.id, job.data);
-    if (!job.data.competitionId) {
-      throw new Error('Missing competitionId');
-    }
+  resultsQueue.process(
+    async (
+      job: BeeQueue.Job<params>,
+      done: BeeQueue.DoneCallback<null | Error>
+    ) => {
+      console.log('Processing job', job.id, job.data);
+      if (!job.data.competitionId) {
+        throw new Error('Missing competitionId');
+      }
 
-    try {
-      await fetchFromApi(job.data.competitionId);
-      done(null);
-    } catch (e) {
-      console.log(e);
-      throw e;
+      try {
+        await fetchFromApi(job.data.competitionId);
+        done(null);
+      } catch (e) {
+        console.log(e);
+        throw e;
+      }
     }
-  });
+  );
 
   return resultsQueue;
-}
-
-import cron from 'node-cron';
-
-export const startCron = () => {
-  // offset schedule to anticipate registration opening
-  cron.schedule('*/15 * * * * *', async () => {
-    console.log('Running results worker');
-    const queue = createQueue({
-      isWorker: false,
-    })
-
-    const createFetchResultsJob = (competitionId: string) => queue.createJob({ competitionId }).timeout(1000 * 60).retries(3);
-
-    await queue.saveAll([
-      'SleeplessinSeattle2023', 'LynnwoodWinter2023'
-    ].map(createFetchResultsJob))
-  });
 }

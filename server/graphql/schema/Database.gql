@@ -22,3 +22,50 @@ type Pick {
   eventId: String!
   points: Int
 }
+
+type Competition {
+  id: String!
+  name: String
+  countryId: String
+  startDate: String
+  endDate: String
+
+  wcaLiveId: Int
+
+  results(eventId: String, personId: String): [Result!]
+}
+
+type Person {
+  id: String!
+  wcaUserId: Int
+  name: String
+  countryId: String
+  gender: String
+  avatar: String
+
+  results(weekYear: weekYear, eventId: String, competitionId: String): [Result!]
+}
+
+type Result {
+  person: Person!
+  competition: Competition!
+  eventId: String!
+  roundTypeId: String!
+  formatId: String!
+  pos: Int
+  best: Int!
+  average: Int!
+  regionalSingleRecord: String
+  regionalAverageRecord: String
+  personCountryId: String
+
+  date: String!
+  week: Int!
+  year: Int!
+  points: Int
+}
+
+input weekYear {
+  week: Int!
+  year: Int!
+}

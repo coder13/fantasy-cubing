@@ -8,6 +8,9 @@
     },
     {
       "path": "./workers"
+    },
+    {
+      "path": "./server"
     }
   ]
 }

@@ -1,6 +1,13 @@
-import { WcaLiveApi } from "shared";
-import { prisma, redisClient } from "./shared";
-import BeeQueue from "bee-queue";
+import { WcaLiveApi } from 'shared';
+import { prisma, redisClient } from './shared';
+import BeeQueue from 'bee-queue';
+
+export const createQueue = (options: BeeQueue.QueueSettings = {}) => {
+  return new BeeQueue<any>('wca-live', {
+    redis: redisClient,
+    ...options,
+  });
+};
 
 export async function updateWcaLiveIds(from?: string) {
   const date = from || new Date().toISOString().split('T')[0];
@@ -9,7 +16,11 @@ export async function updateWcaLiveIds(from?: string) {
     baseURL: process.env.WCA_LIVE_ORIGIN,
   }).competitions(date);
 
-  console.log('Importing', comps.data.competitions.length, 'competition wca live IDs');
+  console.log(
+    'Importing',
+    comps.data.competitions.length,
+    'competition wca live IDs'
+  );
 
   const res = await prisma.wcaLiveCompetition.createMany({
     skipDuplicates: true,
@@ -19,13 +30,11 @@ export async function updateWcaLiveIds(from?: string) {
     })),
   });
 
-  console.log("Imported ", res.count, "wca live ids");
+  console.log('Imported ', res.count, 'wca live ids');
 }
 
 export default function start() {
-  const wcaLiveQueue = new BeeQueue<any>('wca-live', {
-    redis: redisClient
-  });
+  const wcaLiveQueue = createQueue();
 
   wcaLiveQueue.on('ready', () => {
     console.log('[WCA Live]', 'Queue now ready to start doing things');
@@ -51,13 +60,18 @@ export default function start() {
     console.log('[WCA Live]', 'Job succeeded', job.id);
   });
 
-  wcaLiveQueue.process(async (job: BeeQueue.Job<any>, done: BeeQueue.DoneCallback<null | Error>) => {
-    console.log('Processing job', job.id);
-    try {
-      await updateWcaLiveIds(job.data.from);
-      done(null);
-    } catch (e) {
-      done(e as Error)
+  wcaLiveQueue.process(
+    async (
+      job: BeeQueue.Job<any>,
+      done: BeeQueue.DoneCallback<null | Error>
+    ) => {
+      console.log('Processing job', job.id);
+      try {
+        await updateWcaLiveIds(job.data.from);
+        done(null);
+      } catch (e) {
+        done(e as Error);
+      }
     }
-  })
+  );
 }

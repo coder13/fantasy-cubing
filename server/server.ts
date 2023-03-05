@@ -1,7 +1,11 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import '@total-typescript/ts-reset';
 
-import express from 'express';
+import dotenv from 'dotenv';
+dotenv.config({
+  path: '../.env',
+});
+
+import express, { Request } from 'express';
 import http from 'http';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -14,18 +18,20 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { ApolloServer } from '@apollo/server';
 
 import authRouter from './auth';
-import { User } from '@prisma/client';
+import { User } from 'db';
 import graphqlServerConfig from './graphql';
-import prisma from './db';
+import prisma from './lib/db';
 import { WcaApi } from '../shared/graphql/dataSources/WcaApi';
 import { KeyvAdapter } from '@apollo/utils.keyvadapter';
-import KeyvRedis from '@keyv/redis';
 import Keyv from 'keyv';
+import * as queues from './lib/queues';
+import startCron from './cron';
 
 export interface AppContext {
   user?: User;
   db: typeof prisma;
-  wcaApi: WcaApi
+  wcaApi: WcaApi;
+  queues: typeof queues;
 }
 
 async function init() {
@@ -65,19 +71,26 @@ async function init() {
   // Ensure we wait for our server to start
   await server.start();
 
+
   app.use(
     '/graphql',
     cors<cors.CorsRequest>({
       origin: ['*', 'https://studio.apollographql.com'],
     }),
     expressMiddleware(server, {
-      context: async ({ req }) => ({
-        user: req.user,
-        db: prisma,
-        wcaApi: new WcaApi(server)
-      }),
+      context: async ({ req }) => {
+        console.log(req.session.userId)
+        return ({
+          user: req.user as User,
+          db: prisma,
+          wcaApi: new WcaApi(server),
+          queues
+        })
+      },
     }),
   );
+
+  startCron();
 
   // start the Express server
   app.listen(port, () => {
