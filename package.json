@@ -1,10 +1,15 @@
 {
   "private": true,
-  "workspaces": [
-    "@fantasycubing/server",
-    "@fantasycubing/app",
-    "@fantasycubing/db",
-    "@fantasycubing/workers",
-    "@fantasycubing/shared"
-  ]
+  "workspaces": {
+    "nohoist": [
+      "**/app/**"
+    ],
+    "packages": [
+      "@fantasycubing/server",
+      "@fantasycubing/app",
+      "@fantasycubing/db",
+      "@fantasycubing/workers",
+      "@fantasycubing/shared"
+    ]
+  }
 }

@@ -87,9 +87,13 @@ async function fetchFromWcaLive(competitionId: string) {
               best: result.best || 0,
               average: result.average || 0,
               regionalSingleRecord:
-                result.singleRecordTag === 'PR' ? '' : result.singleRecordTag,
+                result.singleRecordTag === 'PR'
+                  ? ''
+                  : result.singleRecordTag?.trim(),
               regionalAverageRecord:
-                result.averageRecordTag === 'PR' ? '' : result.averageRecordTag,
+                result.averageRecordTag === 'PR'
+                  ? ''
+                  : result.averageRecordTag?.trim(),
               attempts: result.attempts.map((attempt) => attempt.result),
             };
 
@@ -179,7 +183,7 @@ export default function startWorker() {
       job: BeeQueue.Job<params>,
       done: BeeQueue.DoneCallback<null | Error>
     ) => {
-      console.log('Processing job', job.id, job.data);
+      console.log('[WCA Live Results]', 'Processing job', job.id, job.data);
       if (!job.data.competitionId) {
         throw new Error('Missing competitionId');
       }

@@ -8,5 +8,5 @@ type Query {
   competition(id: String!): Competition
   competitions(week: Int, startDate: String, endDate: String): [Competition!]!
   person(wcaId: String!): Person
-  results(weekYear: weekYear, eventId: String): [Result!]
+  results(weekYear: WeekYear!, eventId: String, isRecord: Boolean): [Result!]
 }

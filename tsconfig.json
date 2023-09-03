@@ -4,6 +4,9 @@
       "path": "./shared"
     },
     {
+      "path": "./app"
+    },
+    {
       "path": "./db"
     },
     {

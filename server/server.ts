@@ -41,24 +41,24 @@ async function init() {
   app.use(cors<cors.CorsRequest>());
   app.use(json());
 
-  app.use(cookieParser())
+  app.use(cookieParser());
 
   app.use(morgan('tiny'));
 
   const sessionOpts = {
     secret: 'keyboard cat',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
   };
 
   app.use(expressSession(sessionOpts));
 
-  app.use(authRouter)
+  app.use(authRouter);
 
   const httpServer = http.createServer(app);
 
   const cache = new KeyvAdapter(
-    new Keyv("redis://default:eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81@localhost:6379")
+    new Keyv('redis://default:eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81@localhost:6379')
   );
 
   // Same ApolloServer initialization as before, plus the drain plugin
@@ -71,7 +71,6 @@ async function init() {
   // Ensure we wait for our server to start
   await server.start();
 
-
   app.use(
     '/graphql',
     cors<cors.CorsRequest>({
@@ -79,15 +78,15 @@ async function init() {
     }),
     expressMiddleware(server, {
       context: async ({ req }) => {
-        console.log(req.session.userId)
-        return ({
+        console.log(req.session.userId);
+        return {
           user: req.user as User,
           db: prisma,
           wcaApi: new WcaApi(server),
-          queues
-        })
+          queues,
+        };
       },
-    }),
+    })
   );
 
   startCron();

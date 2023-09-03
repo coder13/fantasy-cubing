@@ -123,14 +123,13 @@ export default function startCron() {
   });
 
   // Every 6 hours import from wca
-  cron.schedule('45 */6 * * *', async () => {
+  cron.schedule('23 */1 * * *', async () => {
     console.log(new Date().toLocaleString(), 'Running official results worker');
 
     try {
       // Get all competitions that are not cancelled, have ended, and have not been importing their results for a week
       const competitions = await prisma.competition.findMany({
         where: {
-          cancelled: false,
           endDate: {
             lte: getToday(),
           },

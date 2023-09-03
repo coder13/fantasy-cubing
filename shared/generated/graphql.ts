@@ -89,7 +89,8 @@ export type QueryPersonArgs = {
 
 export type QueryResultsArgs = {
   eventId?: InputMaybe<Scalars['String']>;
-  weekYear?: InputMaybe<WeekYear>;
+  isRecord?: InputMaybe<Scalars['Boolean']>;
+  weekYear: WeekYear;
 };
 
 export type Result = {
@@ -211,7 +212,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   Team: ResolverTypeWrapper<Team>;
   User: ResolverTypeWrapper<User>;
-  weekYear: WeekYear;
+  WeekYear: WeekYear;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -226,7 +227,7 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   Team: Team;
   User: User;
-  weekYear: WeekYear;
+  WeekYear: WeekYear;
 };
 
 export type CompetitionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Competition'] = ResolversParentTypes['Competition']> = {
@@ -267,7 +268,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   competition?: Resolver<Maybe<ResolversTypes['Competition']>, ParentType, ContextType, RequireFields<QueryCompetitionArgs, 'id'>>;
   competitions?: Resolver<Array<ResolversTypes['Competition']>, ParentType, ContextType, Partial<QueryCompetitionsArgs>>;
   person?: Resolver<Maybe<ResolversTypes['Person']>, ParentType, ContextType, RequireFields<QueryPersonArgs, 'wcaId'>>;
-  results?: Resolver<Maybe<Array<ResolversTypes['Result']>>, ParentType, ContextType, Partial<QueryResultsArgs>>;
+  results?: Resolver<Maybe<Array<ResolversTypes['Result']>>, ParentType, ContextType, RequireFields<QueryResultsArgs, 'weekYear'>>;
 };
 
 export type ResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['Result'] = ResolversParentTypes['Result']> = {

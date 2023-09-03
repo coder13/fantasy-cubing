@@ -42,8 +42,8 @@ async function fetchFromApi(competitionId: string) {
         pos: result.pos,
         best: result.best,
         average: result.average,
-        regionalSingleRecord: result.regional_single_record,
-        regionalAverageRecord: result.regional_average_record,
+        regionalSingleRecord: result.regional_single_record?.trim(),
+        regionalAverageRecord: result.regional_average_record?.trim(),
         personCountryId: result.country_iso2,
       };
 
@@ -129,7 +129,7 @@ export default function startWorker() {
       job: BeeQueue.Job<params>,
       done: BeeQueue.DoneCallback<null | Error>
     ) => {
-      console.log('Processing job', job.id, job.data);
+      console.log('[Results]', 'Processing job', job.id, job.data);
       if (!job.data.competitionId) {
         throw new Error('Missing competitionId');
       }

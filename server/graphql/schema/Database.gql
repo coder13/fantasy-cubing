@@ -43,7 +43,7 @@ type Person {
   gender: String
   avatar: String
 
-  results(weekYear: weekYear, eventId: String, competitionId: String): [Result!]
+  results(weekYear: WeekYear, eventId: String, competitionId: String): [Result!]
 }
 
 type Result {
@@ -65,7 +65,7 @@ type Result {
   points: Int
 }
 
-input weekYear {
+input WeekYear {
   week: Int!
   year: Int!
 }
