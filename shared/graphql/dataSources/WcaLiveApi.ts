@@ -1,6 +1,5 @@
 import { RESTDataSource } from '@apollo/datasource-rest';
 import { KeyValueCache } from 'apollo-server-core';
-import { GraphQLError } from 'graphql-request/dist/types';
 
 const competitionsQuery = `
   query GetCompetitions($from: Date!) {
@@ -125,7 +124,7 @@ export class WcaLiveApi extends RESTDataSource {
   }
 
   query<T>(query: string, variables: any) {
-    return this.post<{ data: T; errors?: GraphQLError[] }>('/api', {
+    return this.post<{ data: T; errors?: any[] }>('/api', {
       body: {
         query,
         variables,

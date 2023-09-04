@@ -8,8 +8,7 @@
   "dependencies": {
     "@apollo/datasource-rest": "^5.0.2",
     "@wca/helpers": "^1.1.4",
-    "apollo-server-core": "^3.11.1",
-    "graphql-request": "^5.1.0"
+    "apollo-server-core": "^3.11.1"
   },
   "devDependencies": {
     "@types/node": "^18.14.2"
