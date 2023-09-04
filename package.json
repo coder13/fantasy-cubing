@@ -5,11 +5,11 @@
       "**/app/**"
     ],
     "packages": [
-      "@fantasycubing/server",
-      "@fantasycubing/app",
-      "@fantasycubing/db",
-      "@fantasycubing/workers",
-      "@fantasycubing/shared"
+      "server",
+      "app",
+      "db",
+      "workers",
+      "shared"
     ]
   }
 }

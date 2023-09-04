@@ -1,5 +1,5 @@
 {
-  "name": "@fantasycubing/workers",
+  "name": "workers",
   "version": "1.0.0",
   "private": true,
   "main": "index.ts",
@@ -10,8 +10,8 @@
     "dev": "nodemon workers.ts"
   },
   "dependencies": {
-    "@fantasycubing/db": "1.0.0",
-    "@fantasycubing/shared": "1.0.0",
+    "db": "1.0.0",
+    "shared": "1.0.0",
     "@apollo/utils.keyvadapter": "^2.0.0",
     "@types/bull-arena": "^3.0.7",
     "@types/node": "^18.14.1",

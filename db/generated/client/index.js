@@ -29,11 +29,11 @@ exports.Prisma = Prisma
 
 /**
  * Prisma Client JS version: 4.10.1
- * Query Engine version: aead147aa326ccb985dcfed5b065b4fdabd44b19
+ * Query Engine version: 4bc8b6e1b66cb932731fb1bdbbc550d1e010de81
  */
 Prisma.prismaVersion = {
   client: "4.10.1",
-  engine: "aead147aa326ccb985dcfed5b065b4fdabd44b19"
+  engine: "4bc8b6e1b66cb932731fb1bdbbc550d1e010de81"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -80,8 +80,8 @@ const regularDirname = hasDirname && fs.existsSync(path.join(__dirname, 'schema.
 
 // if the client has been bundled, we need to look for the folders
 const foundDirname = !regularDirname && findSync(process.cwd(), [
+    "db/generated/client",
     "generated/client",
-    "client",
 ], ['d'], ['d'], 1)[0]
 
 const dirname = regularDirname || foundDirname || __dirname
@@ -92,6 +92,13 @@ const dirname = regularDirname || foundDirname || __dirname
 // Based on
 // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
 function makeEnum(x) { return x; }
+
+exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
+  Serializable: 'Serializable'
+});
 
 exports.Prisma.CompetitionScalarFieldEnum = makeEnum({
   id: 'id',
@@ -111,22 +118,6 @@ exports.Prisma.PersonScalarFieldEnum = makeEnum({
   countryId: 'countryId',
   gender: 'gender',
   avatar: 'avatar'
-});
-
-exports.Prisma.PicksScalarFieldEnum = makeEnum({
-  id: 'id',
-  slot: 'slot',
-  teamId: 'teamId',
-  week: 'week',
-  year: 'year',
-  wcaId: 'wcaId',
-  eventId: 'eventId',
-  points: 'points'
-});
-
-exports.Prisma.QueryMode = makeEnum({
-  default: 'default',
-  insensitive: 'insensitive'
 });
 
 exports.Prisma.ResultScalarFieldEnum = makeEnum({
@@ -150,29 +141,16 @@ exports.Prisma.ResultScalarFieldEnum = makeEnum({
   updatedAt: 'updatedAt'
 });
 
+exports.Prisma.WcaLiveCompetitionScalarFieldEnum = makeEnum({
+  wcaId: 'wcaId',
+  wcaLiveId: 'wcaLiveId'
+});
+
 exports.Prisma.SessionScalarFieldEnum = makeEnum({
   id: 'id',
   sid: 'sid',
   data: 'data',
   expiresAt: 'expiresAt'
-});
-
-exports.Prisma.SortOrder = makeEnum({
-  asc: 'asc',
-  desc: 'desc'
-});
-
-exports.Prisma.TeamScalarFieldEnum = makeEnum({
-  id: 'id',
-  userId: 'userId',
-  name: 'name'
-});
-
-exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
-  ReadUncommitted: 'ReadUncommitted',
-  ReadCommitted: 'ReadCommitted',
-  RepeatableRead: 'RepeatableRead',
-  Serializable: 'Serializable'
 });
 
 exports.Prisma.UserScalarFieldEnum = makeEnum({
@@ -183,9 +161,36 @@ exports.Prisma.UserScalarFieldEnum = makeEnum({
   roles: 'roles'
 });
 
-exports.Prisma.WcaLiveCompetitionScalarFieldEnum = makeEnum({
+exports.Prisma.TeamScalarFieldEnum = makeEnum({
+  id: 'id',
+  userId: 'userId',
+  name: 'name'
+});
+
+exports.Prisma.PicksScalarFieldEnum = makeEnum({
+  id: 'id',
+  slot: 'slot',
+  teamId: 'teamId',
+  week: 'week',
+  year: 'year',
   wcaId: 'wcaId',
-  wcaLiveId: 'wcaLiveId'
+  eventId: 'eventId',
+  points: 'points'
+});
+
+exports.Prisma.SortOrder = makeEnum({
+  asc: 'asc',
+  desc: 'desc'
+});
+
+exports.Prisma.QueryMode = makeEnum({
+  default: 'default',
+  insensitive: 'insensitive'
+});
+
+exports.Prisma.NullsOrder = makeEnum({
+  first: 'first',
+  last: 'last'
 });
 
 
@@ -221,7 +226,13 @@ const config = {
     "config": {
       "engineType": "library"
     },
-    "binaryTargets": [],
+    "binaryTargets": [
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x",
+        "native": true
+      }
+    ],
     "previewFeatures": [],
     "isCustomOutput": true
   },
@@ -231,7 +242,7 @@ const config = {
   },
   "relativePath": "../..",
   "clientVersion": "4.10.1",
-  "engineVersion": "aead147aa326ccb985dcfed5b065b4fdabd44b19",
+  "engineVersion": "4bc8b6e1b66cb932731fb1bdbbc550d1e010de81",
   "datasourceNames": [
     "db"
   ],
@@ -256,6 +267,6 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
-path.join(process.cwd(), "generated/client/libquery_engine-debian-openssl-3.0.x.so.node")
+path.join(process.cwd(), "db/generated/client/libquery_engine-debian-openssl-3.0.x.so.node")
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "generated/client/schema.prisma")
+path.join(process.cwd(), "db/generated/client/schema.prisma")
