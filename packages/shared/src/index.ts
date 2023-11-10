@@ -1,5 +1,4 @@
-export * from './graphql/dataSources/WcaApi';
-export * from './graphql/dataSources/WcaLiveApi';
+export * from './graphql';
 
 export * from './lib';
 

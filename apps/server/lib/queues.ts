@@ -1,4 +1,4 @@
-import { results, wcaLive, wcaLiveResults } from "workers";
+import { results, wcaLive, wcaLiveResults } from 'workers';
 
 export const resultsQueue = results.createQueue({
   isWorker: false,

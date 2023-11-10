@@ -3,7 +3,7 @@ import { resultsQueue, wcaLiveQueue, wcaLiveResultsQueue } from '../lib/queues';
 import prisma from '../lib/db';
 import { WcaApi, getToday } from 'shared';
 import { fetchAndUpsertManyComps } from 'workers/competitions';
-import { wcaLiveResults } from 'workers';
+// import { wcaLiveResults } from 'workers';
 import { redisClient } from '../lib/redis';
 
 const createWcaLiveFetchResultsJob = (competitionId: string) =>

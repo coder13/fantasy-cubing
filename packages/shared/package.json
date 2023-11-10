@@ -2,7 +2,7 @@
   "name": "shared",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "types": "dist/types",
+  "types": "dist/index",
   "private": true,
   "license": "MIT",
   "scripts": {

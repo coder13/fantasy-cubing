@@ -6,7 +6,9 @@
     "yarn": "4.x"
   },
   "workspaces": [
-    "packages/*",
-    "apps/workers"
+    "packages/shared",
+    "packages/db",
+    "apps/workers",
+    "apps/server"
   ]
 }

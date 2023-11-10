@@ -1,4 +1,4 @@
-import { CompetitionResolvers } from 'index';
+import { CompetitionResolvers } from '../../../generated/graphql';
 import prisma from '../../../lib/db';
 
 export const results: CompetitionResolvers['results'] = async (

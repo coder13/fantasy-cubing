@@ -10,6 +10,7 @@ const config: CodegenConfig = {
   schema: './graphql/schema/',
   generates: {
     '../shared/src/generated/graphql.ts': backendConf,
+    './generated/graphql.ts': backendConf,
   },
 };
 

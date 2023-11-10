@@ -1,4 +1,4 @@
-import { QueryResolvers } from 'index';
+import { QueryResolvers } from '../../../generated/graphql';
 import { AppContext } from '../../../server';
 import prisma from '../../../lib/db';
 

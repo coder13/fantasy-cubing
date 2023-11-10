@@ -2,7 +2,7 @@ import '@total-typescript/ts-reset';
 
 import dotenv from 'dotenv';
 dotenv.config({
-  path: '../.env',
+  path: '../../.env',
 });
 
 import express, { Request } from 'express';
@@ -21,7 +21,7 @@ import authRouter from './auth';
 import { User } from 'db';
 import graphqlServerConfig from './graphql';
 import prisma from './lib/db';
-import { WcaApi } from '../shared/graphql/dataSources/WcaApi';
+import { WcaApi } from 'shared';
 import { KeyvAdapter } from '@apollo/utils.keyvadapter';
 import Keyv from 'keyv';
 import * as queues from './lib/queues';

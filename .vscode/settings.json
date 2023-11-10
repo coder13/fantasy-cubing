@@ -1,4 +1,11 @@
 {
   "eslint.workingDirectories": ["app", "server", "workers"],
-  "prettier.configPath": ".prettierrc"
+  "prettier.configPath": ".prettierrc",
+  "search.exclude": {
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/tmp": true,
+    "**/dist/**": true
+  }
 }

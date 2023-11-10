@@ -1,4 +1,4 @@
-import { QueryResolvers } from 'index';
+import { QueryResolvers } from '../../../generated/graphql';
 import prisma from '../../../lib/db';
 
 export const results: QueryResolvers['results'] = async (

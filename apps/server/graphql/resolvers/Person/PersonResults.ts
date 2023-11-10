@@ -1,6 +1,6 @@
-import { PersonResolvers } from 'index';
 import { AppContext } from '../../../server';
 import prisma from '../../../lib/db';
+import { PersonResolvers } from '../../../generated/graphql';
 
 export const results: PersonResolvers<AppContext>['results'] = async (
   { id },
