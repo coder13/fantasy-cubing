@@ -1,6 +1,10 @@
 {
   "name": "fantasy-cubing",
   "packageManager": "yarn@4.0.1",
+  "engines": {
+    "node": "18.x",
+    "yarn": "4.x"
+  },
   "workspaces": [
     "packages/*",
     "apps/workers"
