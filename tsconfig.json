@@ -1,19 +1,4 @@
 {
-  "references": [
-    {
-      "path": "./shared"
-    },
-    {
-      "path": "./app"
-    },
-    {
-      "path": "./db"
-    },
-    {
-      "path": "./workers"
-    },
-    {
-      "path": "./server"
-    }
-  ]
+  "exclude": ["packages/**/tests/**", "packages/**/dist/**"],
+  "references": [{ "path": "./packages/shared" }, { "path": "./apps/workers" }]
 }

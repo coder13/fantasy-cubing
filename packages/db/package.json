@@ -1,0 +1,25 @@
+{
+  "name": "db",
+  "description": "Database module for the application. Generates the Prisma client and provides a connection to the database.",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index",
+  "private": true,
+  "license": "ISC",
+  "scripts": {
+    "prisma:migrate": "prisma migrate deploy",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:generate": "prisma generate",
+    "prisma:generate:watch": "prisma generate --watch"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.5.2",
+    "prisma": "^5.5.2"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/parser": "^4.29.2",
+    "eslint": "^7.32.0",
+    "typescript": "^4.3.5"
+  }
+}

@@ -1,15 +1,8 @@
 {
-  "private": true,
-  "workspaces": {
-    "nohoist": [
-      "**/app/**"
-    ],
-    "packages": [
-      "server",
-      "app",
-      "db",
-      "workers",
-      "shared"
-    ]
-  }
+  "name": "fantasy-cubing",
+  "packageManager": "yarn@4.0.1",
+  "workspaces": [
+    "packages/*",
+    "apps/workers"
+  ]
 }

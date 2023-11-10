@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "composite": true,
-    "outDir": "./dist"
-  },
-  "extends": "../shared/tsconfig.json",
-  "exclude": ["node_modules", "dist"]
-}

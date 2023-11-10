@@ -1,0 +1,9 @@
+{
+  "extends": "../../packages/shared/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "target": "esnext"
+  },
+  "exclude": ["node_modules", "dist"]
+}
